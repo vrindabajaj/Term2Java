@@ -95,6 +95,14 @@ public class Turtle {
 		this.currentAngle = 0;
 	}
 
+	public double getCurrentAngle() {
+		return currentAngle;
+	}
+
+	public void setCurrentAngle(double currentAngle) {
+		this.currentAngle = currentAngle;
+	}
+
 	public void show() {
 		putPenUp();
 		move(29);
@@ -131,5 +139,13 @@ public class Turtle {
 		if (currentPoint.getY() < 0) {
 			currentPoint.setY(maxYPos);
 		}
+	}
+	
+	public double distanceBetween(Turtle turtle) {
+		
+		double lengthA = this.getPositionX() - turtle.getPositionX();
+		double lengthB = this.getPositionY() - turtle.getPositionY();
+
+		return Math.sqrt(Math.pow(lengthA, 2) + Math.pow(lengthB, 2));
 	}
 }

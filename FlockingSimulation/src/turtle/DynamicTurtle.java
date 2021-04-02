@@ -5,7 +5,7 @@ import geometry.CartesianCoordinate;
 
 public class DynamicTurtle extends Turtle {
 	public static final double MILLISECONDS_PER_SECOND = 0.001;
-	private int speed = 100;
+	private int speed = 50;
 	
 	
 	public DynamicTurtle(Canvas canvas) {

@@ -14,15 +14,17 @@ public class Boid extends DynamicTurtle{
 	}
 	@Override
 	public void show() {
+		putPenUp();
+		move(29);
 		putPenDown();
-		int size = 40;
-		turn(165);
-		move(size);
-		turn(105);
-		move(21);
-		turn(105);
-		move(size);
-		turn(345);
+		turn(150);
+		for (int i = 0; i < 3; i++) {
+			move(30);
+			turn(120);
+		}
+		turn(30);
+		move(26);
+		turn(180);
 		putPenUp();
 	}
 	
@@ -33,10 +35,7 @@ public class Boid extends DynamicTurtle{
 	
 	@Override
 	public void undrawTurtle() {
-		for (int i = 0; i < 3; i++) {
-			myCanvas.removeMostRecentLine();
-		}
-		myCanvas.repaint();
+		super.undrawTurtle();
 	}
 	
 }
