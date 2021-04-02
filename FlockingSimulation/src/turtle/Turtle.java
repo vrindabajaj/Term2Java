@@ -6,11 +6,9 @@ import geometry.LineSegment;
 
 public class Turtle {
 	protected Canvas myCanvas;
-	private CartesianCoordinate currentPoint = new CartesianCoordinate(0, 0);
+	protected CartesianCoordinate currentPoint = new CartesianCoordinate(0, 0);
 	private double currentAngle = 0;
 	private boolean isPenDown;
-	
-
 	
 	/**
 	 * Turtle constructor.
@@ -97,7 +95,7 @@ public class Turtle {
 		this.currentAngle = 0;
 	}
 
-	public void drawTurtle() {
+	public void show() {
 		putPenUp();
 		move(29);
 		putPenDown();

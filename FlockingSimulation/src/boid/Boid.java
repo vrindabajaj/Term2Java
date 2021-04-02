@@ -1,29 +1,42 @@
 package boid;
 
-import turtle.Turtle;
+import drawing.Canvas;
+import turtle.DynamicTurtle;
 
-public class Boid extends Turtle {
-	
-	
-	public Boid() {
-		super(null);
-		drawBoid();
+public class Boid extends DynamicTurtle{
+
+	public Boid(Canvas canvas, double xPosition, double yPosition) {
+		super(canvas, xPosition, yPosition);
 	}
-
-	private void drawBoid() {
+	
+	public Boid(Canvas myCanvas) {
+		super(myCanvas);
+	}
+	@Override
+	public void show() {
 		putPenDown();
 		int size = 40;
-		int pointAngle = 30;
 		turn(165);
-		move(size + (size/4));
+		move(size);
 		turn(105);
-		move((int) ((Math.sin(pointAngle/2)) * size));
+		move(21);
 		turn(105);
-		move(size + (size/4));
+		move(size);
 		turn(345);
 		putPenUp();
 	}
 	
+	@Override
+	public void update(int time) {
+		super.update(time);
+	}
 	
-
+	@Override
+	public void undrawTurtle() {
+		for (int i = 0; i < 3; i++) {
+			myCanvas.removeMostRecentLine();
+		}
+		myCanvas.repaint();
+	}
+	
 }

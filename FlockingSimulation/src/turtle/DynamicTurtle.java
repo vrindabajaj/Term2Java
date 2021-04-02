@@ -10,13 +10,13 @@ public class DynamicTurtle extends Turtle {
 	
 	public DynamicTurtle(Canvas canvas) {
 		super(canvas);
-		drawTurtle();
+		show();
 	}
 	
 	public DynamicTurtle(Canvas canvas, double xPosition, double yPosition) {
 		super(canvas);
 		this.moveToPoint(new CartesianCoordinate(xPosition, yPosition));
-		this.drawTurtle();
+		this.show();
 	}
 
 	public int getSpeed() {
