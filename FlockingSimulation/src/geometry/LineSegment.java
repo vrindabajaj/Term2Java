@@ -29,12 +29,4 @@ public class LineSegment {
 		return "Line:" + startPoint + "-" + endPoint;
 	}
 
-	public double length() {
-		double lengthA = startPoint.getX() - endPoint.getX();
-		double lengthB = startPoint.getY() - endPoint.getY();
-
-		return Math.sqrt(Math.pow(lengthA, 2) + Math.pow(lengthB, 2));
-
-	}
-
 }

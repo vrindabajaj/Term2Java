@@ -5,6 +5,7 @@ import java.util.List;
 import javax.swing.JFrame;
 
 import boid.Boid;
+import boid.DefaultBoid;
 import tools.Utils;
 
 public class FlockingTest {
@@ -19,8 +20,8 @@ public class FlockingTest {
 	public FlockingTest() {
 
 		flock = new ArrayList<Boid>();
-		for (int i = 0; i < 30; i++) {
-			flock.add(new Boid(canvas, Math.random() * 1200, Math.random() * 900));
+		for (int i = 0; i < 50; i++) {
+			flock.add(new DefaultBoid(canvas, Math.random() * 1200, Math.random() * 900));
 		}
 		setUpGUI();
 		gameLoop();
@@ -52,12 +53,17 @@ public class FlockingTest {
 		}
 		while (continueRunning) {
 			for (Boid boid : flock) {
-				boid.undrawTurtle();
+				boid.hide();
 			}
 			for (Boid boid : flock) {
-				align(boid);
+				
+				boid.align(flock);
+//				boid.separation(flock);
+				boid.cohesion(flock);
+
 				boid.update(deltaTime);
 				boid.wrapPosition(WINDOW_X_SIZE, WINDOW_Y_SIZE);
+				
 			}
 			for (Boid boid : flock) {
 				boid.show();
@@ -67,24 +73,4 @@ public class FlockingTest {
 		}
 	}
 
-	private void align(Boid boid) {
-		int perceptionRadius = 50;
-		double desiredAngle;
-		double totalAngle = 0;
-		int totalBoids = 0;
-		Boid boidA = boid;
-		for (int j = 0; j < flock.size(); j++) {
-			Boid boidB = flock.get(j);
-			double distance = boidA.distanceBetween(boidB);
-			System.out.println(distance);
-			if (boidA != boidB && distance < perceptionRadius) {
-				totalBoids++;
-				totalAngle = totalAngle + boidB.getCurrentAngle();
-			}
-		}
-		if (totalBoids > 0) {
-			desiredAngle = totalAngle / totalBoids;
-			boidA.turn(360 + desiredAngle - boidA.getCurrentAngle());
-		}
-	}
 }

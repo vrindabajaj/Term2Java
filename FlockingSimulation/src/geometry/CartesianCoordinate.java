@@ -29,4 +29,12 @@ public class CartesianCoordinate {
 	public String toString() {
 		return "(" + xPosition + ", " + yPosition + ")";
 	}
+	
+	public double length(CartesianCoordinate otherPoint) {
+		double lengthA = this.getX() - otherPoint.getX();
+		double lengthB = this.getY() - otherPoint.getY();
+
+		return Math.sqrt(Math.pow(lengthA, 2) + Math.pow(lengthB, 2));
+
+	}
 }

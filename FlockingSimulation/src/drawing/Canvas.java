@@ -27,8 +27,8 @@ public class Canvas extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private int xSize, ySize;
 	private List<LineSegment> lines;
-	public final static int DEFAULT_X = 800;
-	public final static int DEFAULT_Y = 600;
+	public final static int DEFAULT_X = 1200;
+	public final static int DEFAULT_Y = 900;
 
 	/**
 	 * Default constructor which produces a canvas of the default size of 800 x
