@@ -1,6 +1,7 @@
 package drawing;
 
 import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -56,6 +57,7 @@ public class Canvas extends JPanel {
 	private void setupCanvas() {
 		setSize(xSize, ySize);
 		setVisible(true);
+//		setBackground(Color.darkGray);
 		repaint();
 	}
 
@@ -66,9 +68,9 @@ public class Canvas extends JPanel {
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
+//		g.setColor(Color.white);
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON); // Smoother
-																									// lines
 		g2.setStroke(new BasicStroke(3));
 
 		synchronized (lines) {

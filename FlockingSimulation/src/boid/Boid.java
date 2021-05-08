@@ -32,12 +32,17 @@ public interface Boid {
 	
 	void setToPoint(CartesianCoordinate cartesianCoordinate);
 
-	void move(double desiredDistance);
 
 	void setCurrentAngle(double desiredAngle);
 	
 	int step();
 
-	void moveToPoint(CartesianCoordinate cartesianCoordinate);	
+	void moveToPoint(CartesianCoordinate cartesianCoordinate);
+
+	void angleOnlySeparation(List<Boid> flock);	
+	
+    void move(double size);
+    
+    public boolean isInView(Boid otherBoid);
 
 }

@@ -1,6 +1,9 @@
 package boid;
 
+import java.util.List;
+
 import drawing.Canvas;
+import geometry.CartesianCoordinate;
 
 public class DefaultBoid extends AbstractBoid{
 
@@ -27,13 +30,7 @@ public class DefaultBoid extends AbstractBoid{
 		putPenUp();
 	}
 	
-	@Override
-	public void update(int time) {
-		super.update(time);
-	}
-	
-	@Override
-	public void hide() {
-		super.hide();
-	}
+
+
+
 }

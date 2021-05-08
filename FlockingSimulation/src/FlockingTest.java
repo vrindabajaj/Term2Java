@@ -20,7 +20,7 @@ public class FlockingTest {
 	public FlockingTest() {
 
 		flock = new ArrayList<Boid>();
-		for (int i = 0; i < 50; i++) {
+		for (int i = 0; i < 100; i++) {
 			flock.add(new DefaultBoid(canvas, Math.random() * 1200, Math.random() * 900));
 		}
 		setUpGUI();
@@ -61,7 +61,7 @@ public class FlockingTest {
 //				boid.separation(flock);
 				boid.cohesion(flock);
 
-				boid.update(deltaTime);
+//				boid.update(deltaTime);
 				boid.wrapPosition(WINDOW_X_SIZE, WINDOW_Y_SIZE);
 				
 			}
