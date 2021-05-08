@@ -65,7 +65,6 @@ public abstract class AbstractBoid implements Boid {
 	/**
 	 * Rotates the turtle clockwise by the specified angle in degrees.
 	 * 
-	 * @param i The number of degrees to turn.
 	 */
 	public void turn(double angle) {
 		this.currentAngle = this.currentAngle + angle;
