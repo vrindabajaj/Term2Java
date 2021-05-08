@@ -1,7 +1,6 @@
 package boid;
 
 import java.util.List;
-
 import drawing.Canvas;
 import geometry.CartesianCoordinate;
 
