@@ -44,7 +44,7 @@ public abstract class AbstractBoid implements Boid {
 	public void move(double size) {
 
 		CartesianCoordinate start = currentPoint;
-		CartesianCoordinate end = giveMeEndPoint(currentPoint, size, currentAngle);
+		CartesianCoordinate end = CartesianCoordinate.targetCoordinate(currentPoint, size, currentAngle);
 		LineSegment lineSegment = new LineSegment(start, end);
 		if (isPenDown) {
 			myCanvas.drawLineSegment(lineSegment);
@@ -52,14 +52,9 @@ public abstract class AbstractBoid implements Boid {
 		currentPoint = end;
 	}
 
-	private CartesianCoordinate giveMeEndPoint(CartesianCoordinate startPoint, double size, double currentAngle2) {
-
-		double yDirection = size * Math.sin(Math.toRadians(currentAngle2));
-		double xDirection = size * Math.cos(Math.toRadians(currentAngle2));
-		double newXLength = startPoint.getX() + xDirection;
-		double newYLength = startPoint.getY() + yDirection;
-
-		return new CartesianCoordinate(newXLength, newYLength);
+	@Override
+	public CartesianCoordinate getPosition() {
+		return currentPoint;
 	}
 
 	/**
@@ -76,14 +71,6 @@ public abstract class AbstractBoid implements Boid {
 	 */
 	public void putPenUp() {
 		this.isPenDown = false;
-	}
-
-	public double getPositionX() {
-		return currentPoint.getX();
-	}
-
-	public double getPositionY() {
-		return currentPoint.getY();
 	}
 
 	/**
@@ -156,11 +143,12 @@ public abstract class AbstractBoid implements Boid {
 	}
 
 	public double distanceBetween(Boid turtle) {
+		return  this.getPosition().add(turtle.getPosition().multiply(-1)).norm();
 
-		double lengthA = this.getPositionX() - turtle.getPositionX();
-		double lengthB = this.getPositionY() - turtle.getPositionY();
-
-		return Math.sqrt(Math.pow(lengthA, 2) + Math.pow(lengthB, 2));
+//		double lengthA = this.getPositionX() - turtle.getPositionX();
+//		double lengthB = this.getPositionY() - turtle.getPositionY();
+//
+//		return Math.sqrt(Math.pow(lengthA, 2) + Math.pow(lengthB, 2));
 	}
 
 	public int getSpeed() {
@@ -309,16 +297,16 @@ public abstract class AbstractBoid implements Boid {
 	}
 
 	public int whichQuadrant(Boid otherBoid) {
-		if (otherBoid.getPositionX() > this.getPositionX() && otherBoid.getPositionY() > this.getPositionY()) {
+		if (otherBoid.getPosition().getX() > this.getPosition().getX() && otherBoid.getPosition().getY() > this.getPosition().getY()) {
 			return 1;
 		}
-		if (otherBoid.getPositionX() > this.getPositionX() && otherBoid.getPositionY() < this.getPositionY()) {
+		if (otherBoid.getPosition().getX() > this.getPosition().getX() && otherBoid.getPosition().getY() < this.getPosition().getY()) {
 			return 2;
 		}
-		if (otherBoid.getPositionX() < this.getPositionX() && otherBoid.getPositionY() < this.getPositionY()) {
+		if (otherBoid.getPosition().getX() < this.getPosition().getX() && otherBoid.getPosition().getY() < this.getPosition().getY()) {
 			return 3;
 		}
-		if (otherBoid.getPositionX() < this.getPositionX() && otherBoid.getPositionY() > this.getPositionY()) {
+		if (otherBoid.getPosition().getX() < this.getPosition().getX() && otherBoid.getPosition().getY() > this.getPosition().getY()) {
 			return 4;
 		}
 		return 0;
@@ -327,8 +315,8 @@ public abstract class AbstractBoid implements Boid {
 	public double relativeAngle(Boid otherBoid) {
 		int quadrant = whichQuadrant(otherBoid);
 		double relativeAngle = 0;
-		double diffX = this.getPositionX() - otherBoid.getPositionX();
-		double diffY = this.getPositionY() - otherBoid.getPositionY();
+		double diffX = this.getPosition().getX() - otherBoid.getPosition().getX();
+		double diffY = this.getPosition().getY() - otherBoid.getPosition().getY();
 		double baseAngle = Math.atan2(diffY, diffX);
 
 		if (quadrant == 1) {

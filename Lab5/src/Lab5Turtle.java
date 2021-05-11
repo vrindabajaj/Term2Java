@@ -5,7 +5,7 @@ import javax.swing.JFrame;
 import drawing.Canvas;
 import tools.Utils;
 import turtle.DynamicTurtle;
-import turtle.RandomTurtleB;
+import turtle.RandomTurtleC;
 
 public class Lab5Turtle {
 	private List<DynamicTurtle> turtles;
@@ -26,7 +26,7 @@ public class Lab5Turtle {
 		turtles = new ArrayList<DynamicTurtle>();
 		
 		for (int i = 0; i < 10; i++) {
-			turtles.add(new RandomTurtleB(canvas, (Math.random()*800), (Math.random()*600)));
+			turtles.add(new RandomTurtleC(canvas, (Math.random()*800), (Math.random()*600)));
 		}
 		
 		runTurtleGame();

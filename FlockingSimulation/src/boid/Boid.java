@@ -6,6 +6,8 @@ import geometry.CartesianCoordinate;
 
 public interface Boid {
 
+	CartesianCoordinate getPosition();
+
 	void align(List<Boid> flock);
 
 	double distanceBetween(Boid boidB);
@@ -13,10 +15,6 @@ public interface Boid {
 	double getCurrentAngle();
 
 	void turn(double d);
-
-	double getPositionX();
-
-	double getPositionY();
 
 	void hide();
 
