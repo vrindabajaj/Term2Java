@@ -33,21 +33,25 @@ public abstract class AbstractBoid implements Boid {
      */
     public AbstractBoid(Canvas myCanvas) {
         this.myCanvas = myCanvas;
-        initialise();
-        this.display();
+       // this.turn( Math.random()* 360);
+        this.setPosition( initialPosition());
+        this.setVelocity( initialVelocity());
+        this.setSpeed(Math.random() * SPEED_FACTOR);
+        //this.display();
     }
 
-    protected void initialise() {
-        //set initial angle
-        this.turn( Math.random()* 360);
-        this.setPosition( new CartesianCoordinate( Math.random() * Canvas.DEFAULT_X, Math.random()* Canvas.DEFAULT_Y));
-        this.setSpeed(Math.random() * SPEED_FACTOR);
+
+
+
+
+    private CartesianCoordinate initialPosition() {
+        return new CartesianCoordinate( Math.random() * Canvas.DEFAULT_X, Math.random()* Canvas.DEFAULT_Y);
+    }
+
+    protected CartesianCoordinate initialVelocity() {
         double speedX = Math.random() * (vMax - vMin) + vMin;
         double speedY = Math.random() * (vMax - vMin) + vMin;
-        this.setVelocity( new CartesianCoordinate(speedX,speedY));
-
-
-
+        return new CartesianCoordinate(speedX, speedY);
     }
 
     public CartesianCoordinate getVelocity() {
@@ -203,7 +207,7 @@ public abstract class AbstractBoid implements Boid {
         double desiredAngle;
         double totalAngle = 0;
         int totalBoids = 0;
-        int angleCoefficient = 10;
+        int angleCoefficient = 20;
         Boid boidA = this;
         for (int j = 0; j < flock.size(); j++) {
             Boid boidB = flock.get(j);
@@ -230,78 +234,9 @@ public abstract class AbstractBoid implements Boid {
         }
     }
 
-    @Override
-    public CartesianCoordinate cohesion(List<Boid> flock, double cohesionRadius) {
-        CartesianCoordinate force = new CartesianCoordinate();
-        List<Boid> neighbors = this.neighbours(flock,cohesionRadius);
-        if (neighbors.size() > 0) {
-            CartesianCoordinate averagePos = this.averagePos(neighbors);
-            force.set(averagePos.add(this.getPosition().multiply(-1)));
-            force.set(force.normalize());
-        }
-        return force;
-    }
 
-    //Average position between boid
-    public static CartesianCoordinate averagePos(List<Boid> boids) {
-        CartesianCoordinate[] pos = new CartesianCoordinate[boids.size()];
-          for (int i = 0 ; i < boids.size() ; i++) {
-            pos[i] = boids.get(i).getPosition();
-        }
-        return CartesianCoordinate.average(pos);
-    }
 
-    //Average position between boid
-    public static CartesianCoordinate averageSpeed(List<Boid> boids) {
-        CartesianCoordinate[] pos = new CartesianCoordinate[boids.size()];
-        for (int i = 0 ; i < boids.size() ; i++) {
-            pos[i] = boids.get(i).getVelocity();
-        }
-        return CartesianCoordinate.average(pos);
-    }
 
-    @Override
-    public CartesianCoordinate separation(List<Boid> flock, double separationRadius) {
-        CartesianCoordinate force = new CartesianCoordinate();
-        List<Boid> neighbours = this.neighbours(flock, separationRadius);
-        int n = neighbours.size();
-        double[] distance = new double[n];
-        for(int i = 0 ; i < n ; i++) {
-            distance[i] = this.distanceBetween(neighbours.get(i));
-            if (distance[i] > 0) {
-                CartesianCoordinate separation = this.getPosition().add(neighbours.get(i).getPosition().multiply(-1));
-                separation.set(separation.normalize());
-                separation.set(separation.multiply(1/distance[i]));
-                force.set(force.add(separation));
-            }
-        }
-        return force;
-
-    }
-
-    @Override
-    public CartesianCoordinate alignmentForce(List<Boid> flock, double alignmentRadius) {
-        CartesianCoordinate force = new CartesianCoordinate();
-        List<Boid> neighbours = this.neighbours(flock, alignmentRadius);
-        int n = neighbours.size();
-
-        if (neighbours.size() > 0) {
-            CartesianCoordinate averageSpeed = this.averageSpeed(neighbours);
-            force = averageSpeed.add(this.getVelocity().multiply(-1));
-            force.set(force.normalize());
-        }
-        return force;
-    }
-
-    public List<Boid> neighbours(List<Boid> flock, double distance) {
-        List<Boid> neighbours = new ArrayList<>();
-        for (Boid boid : flock) {
-            if (boid != this && this.distanceBetween(boid) < distance) {
-                neighbours.add(boid);
-            }
-        }
-        return neighbours;
-    }
 
     @Override
     public void angleOnlySeparation(List<Boid> flock) {

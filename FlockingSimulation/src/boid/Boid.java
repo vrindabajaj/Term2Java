@@ -11,7 +11,6 @@ public interface Boid {
 
 	void align(List<Boid> flock, double alignmentRadius);
 
-	CartesianCoordinate alignmentForce(List<Boid> flock, double alignmentRadius);
 
 	double distanceBetween(Boid boidB);
 
@@ -30,10 +29,7 @@ public interface Boid {
 
 	void display();
 
-	CartesianCoordinate cohesion(List<Boid> flock, double cohesionRadius);
 
-	CartesianCoordinate separation(List<Boid> flock, double separationRadius);
-	
 	void setPosition(CartesianCoordinate cartesianCoordinate);
 
 
