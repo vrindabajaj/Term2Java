@@ -29,7 +29,7 @@ public class Flock {
 
 	protected static final  double DEFAULT_SEPARATION_WEIGHT = 4;
 	protected static final double DEFAULT_ALIGNMENT_WEIGHT = 0.05;
-	protected static final double DEFAULT_COHESION_WEIGHT = 0.9;
+	protected static final double DEFAULT_COHESION_WEIGHT = 0.3;
 	protected static final double DEFAULT_OBSTACLE_WEIGHT = 3.5;
 
 	protected  double separationWeight = DEFAULT_SEPARATION_WEIGHT;
@@ -118,11 +118,11 @@ public class Flock {
 
 
 
-				CartesianCoordinate separationForce = calculateSeparationForce( separationNeighbours, boid).multiply(separationWeight);
-				CartesianCoordinate cohesionForce = calculateCohesionForce( cohesionNeighbours,boid).multiply(cohesionWeight);
-				CartesianCoordinate alignmentForce =calculateAlignmentForce( alignmentNeighbours,boid).multiply(alignmentWeight);
+				CartesianCoordinate separationForce = calculateSeparationForce( separationNeighbours, boid).multiply(separationWeight).multiply(40);
+				CartesianCoordinate cohesionForce = calculateCohesionForce( cohesionNeighbours,boid).multiply(cohesionWeight).multiply(50);
+				CartesianCoordinate alignmentForce =calculateAlignmentForce( alignmentNeighbours,boid).multiply(alignmentWeight).multiply(40);
 
-				CartesianCoordinate obstacleForce = calculateSeparationForce( obstaclesNeighbours,boid).multiply(obstacleWeight);
+				CartesianCoordinate obstacleForce = calculateSeparationForce( obstaclesNeighbours,boid).multiply(obstacleWeight).multiply(100);
 
 				//New position
 				CartesianCoordinate newVelocity = new CartesianCoordinate();

@@ -33,7 +33,7 @@ public abstract class AbstractBoid implements Boid {
      */
     public AbstractBoid(Canvas myCanvas) {
         this.myCanvas = myCanvas;
-        this.turn( Math.random()* 360);
+       // this.turn( Math.random()* 360);
         this.setPosition( initialPosition());
         this.setVelocity( initialVelocity());
         this.setSpeed(Math.random() * SPEED_FACTOR);
