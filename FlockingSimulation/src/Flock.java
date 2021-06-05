@@ -84,11 +84,18 @@ public class Flock {
 				boid.align(flock, alignmentRadius);
 				CartesianCoordinate separationForce = boid.separation(flock, separationRadius).multiply(separationWeight);
 				CartesianCoordinate cohesionForce =boid.cohesion(flock, cohesionRadius).multiply(cohesionWeight);
+				CartesianCoordinate alignmentForce =boid.alignmentForce(flock, alignmentRadius).multiply(alignmentWeight);
                 //New position
+				CartesianCoordinate newVelocity = new CartesianCoordinate();
+				newVelocity.set(newVelocity.add(boid.getVelocity()));
+				newVelocity.set(newVelocity.add(cohesionForce));
+				newVelocity.set(newVelocity.add(separationForce));
+				newVelocity.set(newVelocity.add(alignmentForce));
+				boid.setVelocity(newVelocity);
+
 				CartesianCoordinate newPos = new CartesianCoordinate();
 				newPos.set(newPos.add(boid.getPosition()));
-				newPos.set(newPos.add(cohesionForce));
-				newPos.set(newPos.add(separationForce));
+				newPos.set(newPos.add(newVelocity));
 				boid.setPosition(newPos);
 
 //				boid.update(deltaTime);

@@ -11,12 +11,12 @@ public interface Boid {
 
 	void align(List<Boid> flock, double alignmentRadius);
 
-	//CartesianCoordinate alignmentForce(List<Boid> flock, double alignmentRadius);
+	CartesianCoordinate alignmentForce(List<Boid> flock, double alignmentRadius);
 
 	double distanceBetween(Boid boidB);
 
-	CartesianCoordinate getSpeedV();
-	void setSpeedV(CartesianCoordinate speedV);
+	CartesianCoordinate getVelocity();
+	void setVelocity(CartesianCoordinate velocity);
 
 	double getCurrentAngle();
 

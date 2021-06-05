@@ -18,10 +18,10 @@ public abstract class AbstractBoid implements Boid {
 
 
 
-    protected CartesianCoordinate speedV = new CartesianCoordinate();
+    protected CartesianCoordinate velocity = new CartesianCoordinate();
     protected  double speed;
-    protected static double vMin = 1; //Minimum speed for a bird
-    protected static double vMax = 4; //Maximum speed for a bird
+    protected static double vMin = 1; //Minimum velocity for a bird
+    protected static double vMax = 4; //Maximum velocity for a bird
 
 
 
@@ -44,18 +44,30 @@ public abstract class AbstractBoid implements Boid {
         this.setSpeed(Math.random() * SPEED_FACTOR);
         double speedX = Math.random() * (vMax - vMin) + vMin;
         double speedY = Math.random() * (vMax - vMin) + vMin;
-        this.setSpeedV( new CartesianCoordinate(speedX,speedY));
+        this.setVelocity( new CartesianCoordinate(speedX,speedY));
 
 
 
     }
 
-    public CartesianCoordinate getSpeedV() {
-        return speedV;
+    public CartesianCoordinate getVelocity() {
+        return velocity;
     }
 
-    public void setSpeedV(CartesianCoordinate speedV) {
-        this.speedV = speedV;
+    public void setVelocity(CartesianCoordinate newVelocity) {
+        if (newVelocity.getX() > vMax || newVelocity.getX() < -vMax) {
+            this.velocity.setX(vMax);
+        }
+        else {
+            this.velocity.setX(newVelocity.getX());
+        }
+
+        if (newVelocity.getY() > vMax || newVelocity.getY() < -vMax) {
+            this.velocity.setY(vMax);
+        }
+        else {
+            this.velocity.setY(newVelocity.getY());
+        }
     }
     /**
      * The turtle is moved in its current direction for the given number of pixels.
@@ -243,7 +255,7 @@ public abstract class AbstractBoid implements Boid {
     public static CartesianCoordinate averageSpeed(List<Boid> boids) {
         CartesianCoordinate[] pos = new CartesianCoordinate[boids.size()];
         for (int i = 0 ; i < boids.size() ; i++) {
-            pos[i] = boids.get(i).getSpeedV();
+            pos[i] = boids.get(i).getVelocity();
         }
         return CartesianCoordinate.average(pos);
     }
@@ -265,6 +277,20 @@ public abstract class AbstractBoid implements Boid {
         }
         return force;
 
+    }
+
+    @Override
+    public CartesianCoordinate alignmentForce(List<Boid> flock, double alignmentRadius) {
+        CartesianCoordinate force = new CartesianCoordinate();
+        List<Boid> neighbours = this.neighbours(flock, alignmentRadius);
+        int n = neighbours.size();
+
+        if (neighbours.size() > 0) {
+            CartesianCoordinate averageSpeed = this.averageSpeed(neighbours);
+            force = averageSpeed.add(this.getVelocity().multiply(-1));
+            force.set(force.normalize());
+        }
+        return force;
     }
 
     public List<Boid> neighbours(List<Boid> flock, double distance) {
