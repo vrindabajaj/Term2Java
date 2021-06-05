@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 
 import boid.Boid;
 import boid.DefaultBoid;
+import boid.Obstacle;
 import geometry.CartesianCoordinate;
 import tools.Utils;
 
@@ -22,7 +23,7 @@ public class Flock {
 	protected double cohesionRadius = DEFAULT_COHESION_RADIUS;
 	protected  double separationRadius = DEFAULT_SEPARATION_RADIUS;
 	protected  double alignmentRadius = DEFAULT_ALIGNMENT_RADIUS;
-	protected  double obstacleRadius = DEFAULT_OBSTACLE_RADIUS;
+
 
 	protected static final  double DEFAULT_SEPARATION_WEIGHT = 4;
 	protected static final double DEFAULT_ALIGNMENT_WEIGHT = 0.05;
@@ -34,14 +35,26 @@ public class Flock {
 
 	private JFrame frame = new JFrame();
 	private drawing.Canvas canvas = new drawing.Canvas();
+
+
 	private List<Boid> flock;
+
+	//Obstacles
+	Obstacle obstacle;
+
 	private boolean continueRunning;
 
 	public Flock() {
 
+		createObstacle();
 		createBoids();
 		setUpGUI();
 		gameLoop();
+
+	}
+
+	private void createObstacle() {
+		obstacle = new Obstacle(canvas,250, 150);
 
 	}
 
@@ -72,8 +85,7 @@ public class Flock {
 		continueRunning = true;
 		int deltaTime = 10;
 		for (Boid boid : flock) {
-			boid.turn(Math.random() * 360);
-			//boid.setSpeed((int) (Math.random()*1000));
+			boid.display();
 		}
 		while (continueRunning) {
 			for (Boid boid : flock) {
@@ -85,7 +97,9 @@ public class Flock {
 				CartesianCoordinate separationForce = boid.separation(flock, separationRadius).multiply(separationWeight);
 				CartesianCoordinate cohesionForce =boid.cohesion(flock, cohesionRadius).multiply(cohesionWeight);
 				CartesianCoordinate alignmentForce =boid.alignmentForce(flock, alignmentRadius).multiply(alignmentWeight);
-                //New position
+                //New angle
+				boid.align(flock,alignmentRadius);
+				//New position
 				CartesianCoordinate newVelocity = new CartesianCoordinate();
 				newVelocity.set(newVelocity.add(boid.getVelocity()));
 				newVelocity.set(newVelocity.add(cohesionForce));

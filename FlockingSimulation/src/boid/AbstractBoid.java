@@ -33,21 +33,25 @@ public abstract class AbstractBoid implements Boid {
      */
     public AbstractBoid(Canvas myCanvas) {
         this.myCanvas = myCanvas;
-        initialise();
-        this.display();
+        this.turn( Math.random()* 360);
+        this.setPosition( initialPosition());
+        this.setVelocity( initialVelocity());
+        this.setSpeed(Math.random() * SPEED_FACTOR);
+        //this.display();
     }
 
-    protected void initialise() {
-        //set initial angle
-        this.turn( Math.random()* 360);
-        this.setPosition( new CartesianCoordinate( Math.random() * Canvas.DEFAULT_X, Math.random()* Canvas.DEFAULT_Y));
-        this.setSpeed(Math.random() * SPEED_FACTOR);
+
+
+
+
+    private CartesianCoordinate initialPosition() {
+        return new CartesianCoordinate( Math.random() * Canvas.DEFAULT_X, Math.random()* Canvas.DEFAULT_Y);
+    }
+
+    protected CartesianCoordinate initialVelocity() {
         double speedX = Math.random() * (vMax - vMin) + vMin;
         double speedY = Math.random() * (vMax - vMin) + vMin;
-        this.setVelocity( new CartesianCoordinate(speedX,speedY));
-
-
-
+        return new CartesianCoordinate(speedX, speedY);
     }
 
     public CartesianCoordinate getVelocity() {
