@@ -207,7 +207,7 @@ public abstract class AbstractBoid implements Boid {
         double desiredAngle;
         double totalAngle = 0;
         int totalBoids = 0;
-        int angleCoefficient = 10;
+        int angleCoefficient = 20;
         Boid boidA = this;
         for (int j = 0; j < flock.size(); j++) {
             Boid boidB = flock.get(j);

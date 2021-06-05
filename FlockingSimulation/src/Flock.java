@@ -15,7 +15,7 @@ public class Flock {
 	public static final int DEFAULT_COHESION_RADIUS = 100;
 	public static final int DEFAULT_SEPARATION_RADIUS = 80;
 	public static final int DEFAULT_ALIGNMENT_RADIUS = 80;
-	public static final int DEFAULT_OBSTACLE_RADIUS = 300;
+	public static final int DEFAULT_OBSTACLE_RADIUS = 400;
 	public static final int DEFAULT_FLOCK_SIZE = 100;
 	protected  int flockSize = DEFAULT_FLOCK_SIZE;
 	private final static int WINDOW_X_SIZE = 1200;
@@ -103,8 +103,10 @@ public class Flock {
 		continueRunning = true;
 		int deltaTime = 10;
 		for (Boid boid : flock) {
+			//boid.turn(Math.random() * 360);
 			boid.display();
 		}
+
 		while (continueRunning) {
 			for (Boid boid : flock) {
 				boid.hide();
@@ -118,11 +120,13 @@ public class Flock {
 
 
 
-				CartesianCoordinate separationForce = calculateSeparationForce( separationNeighbours, boid).multiply(separationWeight).multiply(40);
-				CartesianCoordinate cohesionForce = calculateCohesionForce( cohesionNeighbours,boid).multiply(cohesionWeight).multiply(50);
-				CartesianCoordinate alignmentForce =calculateAlignmentForce( alignmentNeighbours,boid).multiply(alignmentWeight).multiply(40);
+				CartesianCoordinate separationForce = calculateSeparationForce( separationNeighbours, boid).multiply(separationWeight).multiply(2);
+				CartesianCoordinate cohesionForce = calculateCohesionForce( cohesionNeighbours,boid).multiply(cohesionWeight).multiply(2);
+				CartesianCoordinate alignmentForce =calculateAlignmentForce( alignmentNeighbours,boid).multiply(alignmentWeight).multiply(2);
 
-				CartesianCoordinate obstacleForce = calculateSeparationForce( obstaclesNeighbours,boid).multiply(obstacleWeight).multiply(100);
+				CartesianCoordinate obstacleForce = calculateSeparationForce( obstaclesNeighbours,boid).multiply(obstacleWeight).multiply(3);
+
+			//	boid.align(flock,alignmentRadius);
 
 				//New position
 				CartesianCoordinate newVelocity = new CartesianCoordinate();
