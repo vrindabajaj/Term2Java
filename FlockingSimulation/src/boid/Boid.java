@@ -8,9 +8,15 @@ public interface Boid {
 
 	CartesianCoordinate getPosition();
 
-	void align(List<Boid> flock);
+
+	void align(List<Boid> flock, double alignmentRadius);
+
+	//CartesianCoordinate alignmentForce(List<Boid> flock, double alignmentRadius);
 
 	double distanceBetween(Boid boidB);
+
+	CartesianCoordinate getSpeedV();
+	void setSpeedV(CartesianCoordinate speedV);
 
 	double getCurrentAngle();
 
@@ -22,25 +28,20 @@ public interface Boid {
 
 	void wrapPosition(double wINDOW_X_SIZE, double wINDOW_Y_SIZE);
 
-	void show();
+	void display();
 
-	void cohesion(List<Boid> flock);
+	CartesianCoordinate cohesion(List<Boid> flock, double cohesionRadius);
+
+	CartesianCoordinate separation(List<Boid> flock, double separationRadius);
 	
-	void separation(List<Boid> flock);
-	
-	void setToPoint(CartesianCoordinate cartesianCoordinate);
+	void setPosition(CartesianCoordinate cartesianCoordinate);
 
 
 	void setCurrentAngle(double desiredAngle);
-	
-	int step();
-
-	void moveToPoint(CartesianCoordinate cartesianCoordinate);
 
 	void angleOnlySeparation(List<Boid> flock);	
 	
-    void move(double size);
-    
+
     public boolean isInView(Boid otherBoid);
 
 }

@@ -7,15 +7,12 @@ import geometry.CartesianCoordinate;
 
 public class DefaultBoid extends AbstractBoid{
 
-	public DefaultBoid(Canvas canvas, double xPosition, double yPosition) {
-		super(canvas, xPosition, yPosition);
+	public DefaultBoid(Canvas canvas) {
+		super(canvas);
 	}
-	
-	public DefaultBoid(Canvas myCanvas) {
-		super(myCanvas);
-	}
+
 	@Override
-	public void show() {
+	public void display() {
 		putPenUp();
 		move(29);
 		putPenDown();
