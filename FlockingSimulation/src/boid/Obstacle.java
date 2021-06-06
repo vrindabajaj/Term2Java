@@ -14,8 +14,6 @@ public class Obstacle extends AbstractBoid {
 
     public static final int LENGTH = 200;
     public static final int BREADTH = 100;
-    private double obstacleCentreX = 350;
-    private double obstacleCentreY = 200;
 
     public Obstacle(Canvas canvas, double xPosition, double yPosition) {
         super(canvas);
