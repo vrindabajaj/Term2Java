@@ -27,9 +27,5 @@ public class DefaultBoid extends AbstractBoid{
 		putPenUp();
 	}
 
-	@Override
-	public void angleOnlySeparation(List<Boid> flock) {
-		// TODO Auto-generated method stub
-		
-	}
+
 }

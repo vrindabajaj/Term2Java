@@ -23,8 +23,6 @@ public interface Boid {
 
 	void hide();
 
-	void update(int deltaTime);
-
 	void wrapPosition(double wINDOW_X_SIZE, double wINDOW_Y_SIZE);
 
 	void display();
@@ -35,8 +33,7 @@ public interface Boid {
 
 	void setCurrentAngle(double desiredAngle);
 
-	void angleOnlySeparation(List<Boid> flock);	
-	
+
 
     public boolean isInView(Boid otherBoid);
 
