@@ -1,8 +1,18 @@
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSlider;
+import javax.swing.SwingConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import boid.AbstractBoid;
 import boid.Boid;
@@ -13,13 +23,14 @@ import tools.Utils;
 
 public class Flock {
 	public static final int DEFAULT_COHESION_RADIUS = 100;
-	public static final int DEFAULT_SEPARATION_RADIUS = 80;
-	public static final int DEFAULT_ALIGNMENT_RADIUS = 80;
-	public static final int DEFAULT_OBSTACLE_RADIUS = 400;
-	public static final int DEFAULT_FLOCK_SIZE = 100;
-	protected  int flockSize = DEFAULT_FLOCK_SIZE;
-	private final static int WINDOW_X_SIZE = 1200;
-	private final static int WINDOW_Y_SIZE = 900;
+	public static final int DEFAULT_SEPARATION_RADIUS = 70;
+	public static final int DEFAULT_ALIGNMENT_RADIUS = 100;
+	public static final int DEFAULT_OBSTACLE_RADIUS = 100;
+	public static final int DEFAULT_FLOCK_SIZE = 200;
+	public final static int WINDOW_X_SIZE = 1200;
+	public final static int WINDOW_Y_SIZE = 900;
+
+	protected int flockSize = DEFAULT_FLOCK_SIZE;
 
 	protected double cohesionRadius = DEFAULT_COHESION_RADIUS;
 	protected  double separationRadius = DEFAULT_SEPARATION_RADIUS;
@@ -27,17 +38,27 @@ public class Flock {
 	protected  double obstacleRadius = DEFAULT_OBSTACLE_RADIUS;
 
 
-	protected static final  double DEFAULT_SEPARATION_WEIGHT = 4;
-	protected static final double DEFAULT_ALIGNMENT_WEIGHT = 0.05;
-	protected static final double DEFAULT_COHESION_WEIGHT = 0.3;
-	protected static final double DEFAULT_OBSTACLE_WEIGHT = 3.5;
+	public static final  double DEFAULT_SEPARATION_WEIGHT = 4;
+	public static final double DEFAULT_ALIGNMENT_WEIGHT = 0.05;
+	public static final double DEFAULT_COHESION_WEIGHT = 0.2;
+	public static final double DEFAULT_OBSTACLE_WEIGHT = 3.5;
 
 	protected  double separationWeight = DEFAULT_SEPARATION_WEIGHT;
 	protected  double alignmentWeight = DEFAULT_ALIGNMENT_WEIGHT;
 	protected  double cohesionWeight = DEFAULT_COHESION_WEIGHT;
-	protected static double obstacleWeight = DEFAULT_OBSTACLE_WEIGHT; //Separation coefficient for an obstacle
+	protected static double obstacleWeight = DEFAULT_OBSTACLE_WEIGHT;
 
 	private JFrame frame = new JFrame();
+	private JPanel sidePanel = new JPanel();
+	private BoxLayout box = new BoxLayout(sidePanel, BoxLayout.Y_AXIS);
+	private JSlider separationWeightSlide = new JSlider(SwingConstants.HORIZONTAL, 0, 10, 4);
+	private JSlider cohesionWeightSlide = new JSlider(SwingConstants.HORIZONTAL, 0, 10, 3);
+	private JSlider alignmentWeightSlide = new JSlider(SwingConstants.HORIZONTAL, 0, 10, 5);
+	private JLabel sepLabel = new JLabel("Separation");
+	private JLabel cohLabel = new JLabel("Cohesion");
+	private JLabel aliLabel = new JLabel("Alignment");
+	private JButton resetSlidersButton = new JButton();
+
 	private drawing.Canvas canvas = new drawing.Canvas();
 
 
@@ -81,6 +102,60 @@ public class Flock {
 
 		frame.add(canvas);
 		frame.add(canvas, BorderLayout.CENTER);
+		frame.add(sidePanel, BorderLayout.EAST);
+
+		sidePanel.setLayout(box);
+//      lowerPanel.setBackground(Color.gray);
+
+		separationWeightSlide.setMajorTickSpacing(5);
+		separationWeightSlide.setMinorTickSpacing(1);
+		separationWeightSlide.setPaintTicks(true);
+		separationWeightSlide.setPaintLabels(true);
+
+		sidePanel.add(sepLabel);
+		sidePanel.add(separationWeightSlide);
+
+		cohesionWeightSlide.setMajorTickSpacing(5);
+		cohesionWeightSlide.setMinorTickSpacing(1);
+		cohesionWeightSlide.setPaintTicks(true);
+		cohesionWeightSlide.setPaintLabels(true);
+
+		sidePanel.add(cohLabel);
+		sidePanel.add(cohesionWeightSlide);
+//		cohLabel.setFont(Font.PLAIN);
+
+		alignmentWeightSlide.setMajorTickSpacing(5);
+		alignmentWeightSlide.setMinorTickSpacing(1);
+		alignmentWeightSlide.setPaintTicks(true);
+		alignmentWeightSlide.setPaintLabels(true);
+
+		sidePanel.add(aliLabel);
+		sidePanel.add(alignmentWeightSlide);
+
+		separationWeightSlide.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent ce) {
+				separationWeight = (separationWeightSlide.getValue()/5) * DEFAULT_SEPARATION_WEIGHT;
+			}
+		});
+
+		cohesionWeightSlide.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent ce) {
+				cohesionWeight = (cohesionWeightSlide.getValue() / 5) * DEFAULT_COHESION_WEIGHT;
+			}
+		});
+
+		alignmentWeightSlide.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent ce) {
+				alignmentWeight = (alignmentWeightSlide.getValue() / 5) * DEFAULT_ALIGNMENT_WEIGHT;
+			}
+		});
+
+		resetSlidersButton.setText("Click to reset sliders!");
+		sidePanel.add(resetSlidersButton);
+
 		frame.setVisible(true);
 
 	}

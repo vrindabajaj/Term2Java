@@ -103,7 +103,7 @@ public abstract class AbstractBoid implements Boid {
     }
 
     /**
-     * Moves the pen off the canvas so that the turtle’s route isn’t drawn for any
+     * Moves the pen off the canvas so that the turtleï¿½s route isnï¿½t drawn for any
      * subsequent movements.
      */
     public void putPenUp() {
@@ -111,7 +111,7 @@ public abstract class AbstractBoid implements Boid {
     }
 
     /**
-     * Lowers the pen onto the canvas so that the turtle’s route is drawn.
+     * Lowers the pen onto the canvas so that the turtleï¿½s route is drawn.
      */
     public void putPenDown() {
         this.isPenDown = true;
@@ -175,32 +175,31 @@ public abstract class AbstractBoid implements Boid {
         }
     }
 
-    public double distanceBetween(Boid turtle) {
-        return this.getPosition().add(turtle.getPosition().multiply(-1)).norm();
+	public double distanceBetween(Boid turtle) {
+		return this.getPosition().add(turtle.getPosition().multiply(-1)).norm();
 
-        //		double lengthA = this.getPositionX() - turtle.getPositionX();
-        //		double lengthB = this.getPositionY() - turtle.getPositionY();
-        //
-        //		return Math.sqrt(Math.pow(lengthA, 2) + Math.pow(lengthB, 2));
-    }
+		// double lengthA = this.getPositionX() - turtle.getPositionX();
+		// double lengthB = this.getPositionY() - turtle.getPositionY();
+		//
+		// return Math.sqrt(Math.pow(lengthA, 2) + Math.pow(lengthB, 2));
+	}
 
-    public double getSpeed() {
-        return speed;
-    }
+	public double getSpeed() {
+		return speed;
+	}
 
-    public void setSpeed(double speed) {
-        this.speed = speed;
-    }
+	public void setSpeed(double speed) {
+		this.speed = speed;
+	}
 
-     public void update(int time) {
-        move(step(time));
-    }
+	public void update(int time) {
+		move(step(time));
+	}
 
-
-    public int step(int time) {
-        int distance = (int) (time * SECONDS_PER_MILLISECS * this.speed);
-        return distance;
-    }
+	public int step(int time) {
+		int distance = (int) (time * SECONDS_PER_MILLISECS * this.speed);
+		return distance;
+	}
 
     @Override
     public void align(List<Boid> flock, double alignmentRadius) {
