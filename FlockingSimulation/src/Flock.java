@@ -203,17 +203,19 @@ public class Flock {
 			//	boid.align(flock,alignmentRadius);
 
 				//New position
+				CartesianCoordinate acceleration = new CartesianCoordinate();
+				acceleration.set(acceleration.add(obstacleForce));
+				acceleration.set(acceleration.add(cohesionForce));
+				acceleration.set(acceleration.add(separationForce));
+				acceleration.set(acceleration.add(alignmentForce));
+
 				CartesianCoordinate newVelocity = new CartesianCoordinate();
-				newVelocity.set(newVelocity.add(obstacleForce));
-				newVelocity.set(newVelocity.add(boid.getVelocity()));
-				newVelocity.set(newVelocity.add(cohesionForce));
-				newVelocity.set(newVelocity.add(separationForce));
-				newVelocity.set(newVelocity.add(alignmentForce));
+				newVelocity.set(boid.getVelocity().add(acceleration));
 				boid.setVelocity(newVelocity);
 
 				CartesianCoordinate newPos = new CartesianCoordinate();
 				newPos.set(newPos.add(boid.getPosition()));
-				newPos.set(newPos.add(newVelocity));
+				newPos.set(newPos.add( newVelocity));
 				boid.setPosition(newPos);
 
 //				boid.update(deltaTime);
