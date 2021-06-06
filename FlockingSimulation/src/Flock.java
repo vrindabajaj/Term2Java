@@ -177,7 +177,6 @@ public class Flock {
 		continueRunning = true;
 		int deltaTime = 10;
 		for (Boid boid : flock) {
-			//boid.turn(Math.random() * 360);
 			boid.display();
 		}
 
@@ -217,6 +216,8 @@ public class Flock {
 				newPos.set(newPos.add(boid.getPosition()));
 				newPos.set(newPos.add( newVelocity));
 				boid.setPosition(newPos);
+
+				//boid.turn(boid.getVelocity().headingY() + 90);
 
 //				boid.update(deltaTime);
 				boid.wrapPosition(WINDOW_X_SIZE, WINDOW_Y_SIZE);
