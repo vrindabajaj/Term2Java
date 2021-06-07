@@ -1,6 +1,5 @@
 package boid;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import drawing.Canvas;
@@ -12,16 +11,11 @@ public abstract class AbstractBoid implements Boid {
     protected CartesianCoordinate currentPoint = new CartesianCoordinate(0, 0);
     private double currentAngle = 0;
     private boolean isPenDown;
-    public static final double SECONDS_PER_MILLISECS = 0.001;
-    protected static final  int SPEED_FACTOR = 200;
-
-
 
 
     protected CartesianCoordinate velocity = new CartesianCoordinate();
-    protected  double speed;
-    protected static double vMin = 1; //Minimum velocity for a bird
-    protected static double vMax = 4; //Maximum velocity for a bird
+    protected static double minVelocity = 1;
+    protected static double maxVelocity = 4;
 
 
 
@@ -36,8 +30,6 @@ public abstract class AbstractBoid implements Boid {
        // this.turn( Math.random()* 360);
         this.setPosition( initialPosition());
         this.setVelocity( initialVelocity());
-        this.setSpeed(Math.random() * SPEED_FACTOR);
-        //this.display();
     }
 
 
@@ -49,9 +41,12 @@ public abstract class AbstractBoid implements Boid {
     }
 
     protected CartesianCoordinate initialVelocity() {
-        double speedX = Math.random() * (vMax - vMin) + vMin;
-        double speedY = Math.random() * (vMax - vMin) + vMin;
-        return new CartesianCoordinate(speedX, speedY);
+//        double velocityX = Math.random() * (maxVelocity - minVelocity) + minVelocity;
+//        double velocityY = Math.random() * (maxVelocity - minVelocity) + minVelocity;
+//        return new CartesianCoordinate(velocityX, velocityY);
+
+        double randomAngle = Math.toRadians( Math.random() * 360);
+        return new CartesianCoordinate( Math.cos(randomAngle),Math.sin(randomAngle)).normalize();
     }
 
     public CartesianCoordinate getVelocity() {
@@ -59,15 +54,15 @@ public abstract class AbstractBoid implements Boid {
     }
 
     public void setVelocity(CartesianCoordinate newVelocity) {
-        if (newVelocity.getX() > vMax || newVelocity.getX() < -vMax) {
-            this.velocity.setX(vMax);
+        if (newVelocity.getX() > maxVelocity || newVelocity.getX() < -maxVelocity) {
+            this.velocity.setX(maxVelocity);
         }
         else {
             this.velocity.setX(newVelocity.getX());
         }
 
-        if (newVelocity.getY() > vMax || newVelocity.getY() < -vMax) {
-            this.velocity.setY(vMax);
+        if (newVelocity.getY() > maxVelocity || newVelocity.getY() < -maxVelocity) {
+            this.velocity.setY(maxVelocity);
         }
         else {
             this.velocity.setY(newVelocity.getY());
@@ -177,29 +172,10 @@ public abstract class AbstractBoid implements Boid {
 
 	public double distanceBetween(Boid turtle) {
 		return this.getPosition().add(turtle.getPosition().multiply(-1)).norm();
-
-		// double lengthA = this.getPositionX() - turtle.getPositionX();
-		// double lengthB = this.getPositionY() - turtle.getPositionY();
-		//
-		// return Math.sqrt(Math.pow(lengthA, 2) + Math.pow(lengthB, 2));
 	}
 
-	public double getSpeed() {
-		return speed;
-	}
 
-	public void setSpeed(double speed) {
-		this.speed = speed;
-	}
 
-	public void update(int time) {
-		move(step(time));
-	}
-
-	public int step(int time) {
-		int distance = (int) (time * SECONDS_PER_MILLISECS * this.speed);
-		return distance;
-	}
 
     @Override
     public void align(List<Boid> flock, double alignmentRadius) {
@@ -237,28 +213,6 @@ public abstract class AbstractBoid implements Boid {
 
 
 
-    @Override
-    public void angleOnlySeparation(List<Boid> flock) {
-        double totalAngle = 0;
-        double desiredAngle = 0;
-        int totalBoids = 0;
-        Boid boidA = this;
-
-        for (int j = 0; j < flock.size(); j++) {
-            Boid boidB = flock.get(j);
-            double distance = boidA.distanceBetween(boidB);
-            if (boidA != boidB && distance < 50) {
-                totalBoids++;
-
-                totalAngle = totalAngle + relativeAngle(boidB);
-            }
-        }
-        if (totalBoids > 0) {
-            desiredAngle = (totalAngle / totalBoids);
-            // System.out.println(desiredAngle);
-            boidA.setCurrentAngle(desiredAngle);
-        }
-    }
 
     public int whichQuadrant(Boid otherBoid) {
         if (otherBoid.getPosition().getX() > this.getPosition().getX() && otherBoid.getPosition().getY() > this.getPosition().getY()) {

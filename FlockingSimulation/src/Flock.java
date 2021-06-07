@@ -1,6 +1,4 @@
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +12,6 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import boid.AbstractBoid;
 import boid.Boid;
 import boid.DefaultBoid;
 import boid.Obstacle;
@@ -25,7 +22,7 @@ public class Flock {
 	public static final int DEFAULT_COHESION_RADIUS = 100;
 	public static final int DEFAULT_SEPARATION_RADIUS = 70;
 	public static final int DEFAULT_ALIGNMENT_RADIUS = 100;
-	public static final int DEFAULT_OBSTACLE_RADIUS = 100;
+	public static final int DEFAULT_OBSTACLE_RADIUS = 50;
 	public static final int DEFAULT_FLOCK_SIZE = 200;
 	public final static int WINDOW_X_SIZE = 1200;
 	public final static int WINDOW_Y_SIZE = 900;
@@ -78,6 +75,11 @@ public class Flock {
 
 	}
 
+	public static void main(String[] args) {
+		System.out.println("Running FlockingTest...");
+		new Flock();
+	}
+
 	private void createObstacle() {
 		obstacle = new Obstacle(canvas,250, 150);
 
@@ -90,10 +92,7 @@ public class Flock {
 		}
 	}
 
-	public static void main(String[] args) {
-		System.out.println("Running FlockingTest...");
-		new Flock();
-	}
+
 
 	private void setUpGUI() {
 		frame.setTitle("Flocking Simulation");
@@ -178,7 +177,6 @@ public class Flock {
 		continueRunning = true;
 		int deltaTime = 10;
 		for (Boid boid : flock) {
-			//boid.turn(Math.random() * 360);
 			boid.display();
 		}
 
@@ -204,18 +202,23 @@ public class Flock {
 			//	boid.align(flock,alignmentRadius);
 
 				//New position
+				CartesianCoordinate acceleration = new CartesianCoordinate();
+				acceleration.set(acceleration.add(obstacleForce));
+				acceleration.set(acceleration.add(cohesionForce));
+				acceleration.set(acceleration.add(separationForce));
+				acceleration.set(acceleration.add(alignmentForce));
+
 				CartesianCoordinate newVelocity = new CartesianCoordinate();
-				newVelocity.set(newVelocity.add(obstacleForce));
-				newVelocity.set(newVelocity.add(boid.getVelocity()));
-				newVelocity.set(newVelocity.add(cohesionForce));
-				newVelocity.set(newVelocity.add(separationForce));
-				newVelocity.set(newVelocity.add(alignmentForce));
+				newVelocity.set(boid.getVelocity().add(acceleration));
 				boid.setVelocity(newVelocity);
+
 
 				CartesianCoordinate newPos = new CartesianCoordinate();
 				newPos.set(newPos.add(boid.getPosition()));
-				newPos.set(newPos.add(newVelocity));
+				newPos.set(newPos.add( newVelocity));
 				boid.setPosition(newPos);
+
+
 
 //				boid.update(deltaTime);
 				boid.wrapPosition(WINDOW_X_SIZE, WINDOW_Y_SIZE);
@@ -231,9 +234,12 @@ public class Flock {
 
 	private List<Boid> neighboursObstacles(Boid boid, double obstacleRadius) {
 		List<Boid> obstaclesNeighbours = new ArrayList<>();
-		double distanceNeighbor = boid.distanceBetween(this.obstacle);
-		if (distanceNeighbor <= obstacleRadius && distanceNeighbor >= 0) {
-			obstaclesNeighbours.add(this.obstacle);
+		List<CartesianCoordinate> obstacles = this.obstacle.obstaclePoints();
+		for (CartesianCoordinate obstacle:obstacles ) {
+			double distanceNeighbor = boid.getPosition().add(obstacle.multiply(-1)).norm();
+			if (distanceNeighbor <= obstacleRadius && distanceNeighbor >= 0) {
+				obstaclesNeighbours.add(this.obstacle);
+			}
 		}
 		return  obstaclesNeighbours;
 	}
@@ -242,8 +248,8 @@ public class Flock {
 		CartesianCoordinate force = new CartesianCoordinate();
 
 		if (neighbours.size() > 0) {
-			CartesianCoordinate averageSpeed = averageVelocity(neighbours);
-			force = averageSpeed.add(boid.getVelocity().multiply(-1));
+			CartesianCoordinate averageVelocity = averageVelocity(neighbours);
+			force = averageVelocity.sub(boid.getVelocity());
 			force.set(force.normalize());
 		}
 		return force;
@@ -252,8 +258,8 @@ public class Flock {
 	protected CartesianCoordinate calculateCohesionForce(List<Boid> neighbors, Boid boid) {
 		CartesianCoordinate force = new CartesianCoordinate();
 		if (neighbors.size() > 0) {
-			CartesianCoordinate averagePos = averagePos(neighbors);
-			force.set(averagePos.add(boid.getPosition().multiply(-1)));
+			CartesianCoordinate averagePos = averagePosition(neighbors);
+			force.set(averagePos.sub(boid.getPosition()));
 			force.set(force.normalize());
 		}
 		return force;
@@ -268,7 +274,7 @@ public class Flock {
 		for(int i = 0 ; i < n ; i++) {
 			distance[i] = boid.distanceBetween(neighbours.get(i));
 			if (distance[i] > 0) {
-				CartesianCoordinate separation = boid.getPosition().add(neighbours.get(i).getPosition().multiply(-1));
+				CartesianCoordinate separation = boid.getPosition().sub(neighbours.get(i).getPosition());
 				separation.set(separation.normalize());
 				separation.set(separation.multiply(1/distance[i]));
 				force.set(force.add(separation));
@@ -278,7 +284,7 @@ public class Flock {
 	}
 
 	//Average position between boid
-	public static CartesianCoordinate averagePos(List<Boid> boids) {
+	public static CartesianCoordinate averagePosition(List<Boid> boids) {
 		CartesianCoordinate[] pos = new CartesianCoordinate[boids.size()];
 		for (int i = 0 ; i < boids.size() ; i++) {
 			pos[i] = boids.get(i).getPosition();
@@ -286,13 +292,13 @@ public class Flock {
 		return CartesianCoordinate.average(pos);
 	}
 
-	//Average position between boid
+	//Average velocity between boid
 	public static CartesianCoordinate averageVelocity(List<Boid> boids) {
-		CartesianCoordinate[] pos = new CartesianCoordinate[boids.size()];
+		CartesianCoordinate[] velocity = new CartesianCoordinate[boids.size()];
 		for (int i = 0 ; i < boids.size() ; i++) {
-			pos[i] = boids.get(i).getVelocity();
+			velocity[i] = boids.get(i).getVelocity();
 		}
-		return CartesianCoordinate.average(pos);
+		return CartesianCoordinate.average(velocity);
 	}
 
 }
