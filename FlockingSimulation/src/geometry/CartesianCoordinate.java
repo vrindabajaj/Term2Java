@@ -67,6 +67,11 @@ public class CartesianCoordinate {
         return (new CartesianCoordinate(this.x + coordinate.getX(), this.y + coordinate.getY()));
     }
 
+    //Subtract another co-ordinate
+    public CartesianCoordinate sub(CartesianCoordinate coordinate) {
+        return (new CartesianCoordinate(this.x - coordinate.getX(), this.y - coordinate.getY()));
+    }
+
     //Norm
     public double norm() {
 
@@ -91,11 +96,11 @@ public class CartesianCoordinate {
     }
 
 	public double headingX() {
-		return Math.atan2(y, x) * 180 / Math.PI;
+		return Math.atan2(y, x);
 	}
 
 	public double headingY() {
-		return Math.atan2(x, y) * 180 / Math.PI;
+		return Math.atan2(x, y);
 	}
 
     public void set(CartesianCoordinate coordinate) {

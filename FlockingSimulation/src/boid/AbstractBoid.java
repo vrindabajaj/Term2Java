@@ -41,9 +41,12 @@ public abstract class AbstractBoid implements Boid {
     }
 
     protected CartesianCoordinate initialVelocity() {
-        double velocityX = Math.random() * (maxVelocity - minVelocity) + minVelocity;
-        double velocityY = Math.random() * (maxVelocity - minVelocity) + minVelocity;
-        return new CartesianCoordinate(velocityX, velocityY);
+//        double velocityX = Math.random() * (maxVelocity - minVelocity) + minVelocity;
+//        double velocityY = Math.random() * (maxVelocity - minVelocity) + minVelocity;
+//        return new CartesianCoordinate(velocityX, velocityY);
+
+        double randomAngle = Math.toRadians( Math.random() * 360);
+        return new CartesianCoordinate( Math.cos(randomAngle),Math.sin(randomAngle)).normalize();
     }
 
     public CartesianCoordinate getVelocity() {
