@@ -9,6 +9,12 @@ public class CartesianCoordinate {
         this.y = y;
 
     }
+    public static void main(String[] args) {
+        System.out.println( "Heading X :" + Math.toDegrees(new CartesianCoordinate(-2,2).headingX() + Math.PI/2)  );
+        System.out.println( "Heading Y :" + Math.toDegrees(new CartesianCoordinate(-2,2).headingY() + Math.PI/2) );
+
+
+    }
 
     public CartesianCoordinate() {
         this(0, 0);

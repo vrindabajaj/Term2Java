@@ -19,6 +19,7 @@ public class Obstacle extends AbstractBoid {
         super(canvas);
         this.setPosition( new CartesianCoordinate(xPosition,yPosition));
         this.setVelocity( new CartesianCoordinate());
+        this.setCurrentAngle(0);
         this.display();
     }
 

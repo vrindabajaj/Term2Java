@@ -21,10 +21,10 @@ import geometry.CartesianCoordinate;
 import tools.Utils;
 
 public class Flock {
-	public static final int DEFAULT_COHESION_RADIUS = 100;
+	public static final int DEFAULT_COHESION_RADIUS = 200;
 	public static final int DEFAULT_SEPARATION_RADIUS = 70;
 	public static final int DEFAULT_ALIGNMENT_RADIUS = 100;
-	public static final int DEFAULT_OBSTACLE_RADIUS = 50;
+	public static final int DEFAULT_OBSTACLE_RADIUS = 60;
 	public static final int DEFAULT_FLOCK_SIZE = 200;
 	public final static int WINDOW_X_SIZE = 1500;
 	public final static int WINDOW_Y_SIZE = 1000;
@@ -185,7 +185,7 @@ public class Flock {
 
 	private void gameLoop() {
 		continueRunning = true;
-		int deltaTime = 10;
+		int deltaTime = 20;
 		for (Boid boid : flock) {
 			boid.display();
 		}
