@@ -11,8 +11,7 @@ public class DefaultBoid extends AbstractBoid {
 	@Override
 	public void display() {
 
-		double angle = getCurrentAngle();
-
+		rotate();
 		putPenDown();
 		move(25);
 		putPenUp();
@@ -30,7 +29,11 @@ public class DefaultBoid extends AbstractBoid {
 //		move(26);
 //		turn(180);
 		putPenUp();
+ 		resetAngleToZero();
+	}
 
-		setCurrentAngle(angle);
+	private void rotate() {
+		double desiredAngle = Math.toDegrees(getVelocity().headingY() + Math.PI) + 90 ;
+		turn(desiredAngle);
 	}
 }
