@@ -26,8 +26,8 @@ public class Flock {
 	public static final int DEFAULT_ALIGNMENT_RADIUS = 100;
 	public static final int DEFAULT_OBSTACLE_RADIUS = 50;
 	public static final int DEFAULT_FLOCK_SIZE = 200;
-	public final static int WINDOW_X_SIZE = 1200;
-	public final static int WINDOW_Y_SIZE = 900;
+	public final static int WINDOW_X_SIZE = 1500;
+	public final static int WINDOW_Y_SIZE = 1000;
 
 	protected int flockSize = DEFAULT_FLOCK_SIZE;
 
