@@ -15,10 +15,10 @@ public class Flock {
 
     public static final int DEFAULT_FLOCK_SIZE = 200;
     public static final int INITIAL_DELTA_TIME = 50;
-    public static final int DEFAULT_COHESION_RADIUS = 150;
+    public static final int DEFAULT_COHESION_RADIUS = 100;
     public static final int DEFAULT_SEPARATION_RADIUS = 50;
     public static final int DEFAULT_ALIGNMENT_RADIUS = 100;
-    public static final int DEFAULT_OBSTACLE_RADIUS = 80;
+    public static final int DEFAULT_OBSTACLE_RADIUS = 50;
 
     public static final double INITIAL_SEPARATION_WEIGHT = 4;
     public static final double INITIAL_ALIGNMENT_WEIGHT = .06;
@@ -46,7 +46,6 @@ public class Flock {
     private final drawing.Canvas canvas;
 	private final List<Boid> flock = Collections.synchronizedList(new ArrayList<Boid>());
     private boolean continueRunning;
-    private double maxforce = 0.03;
 
     public Flock() {
         canvas = new Canvas( DEFAULT_CANVAS_WIDTH,DEFAULT_CANVAS_HEIGHT);
