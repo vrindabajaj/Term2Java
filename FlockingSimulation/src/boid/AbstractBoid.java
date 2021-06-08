@@ -149,7 +149,7 @@ public abstract class AbstractBoid implements Boid {
 	}
 
 	public double distanceBetween(Boid turtle) {
-		return this.getPosition().add(turtle.getPosition().multiply(-1)).norm();
+		return this.getPosition().sub(turtle.getPosition()).norm();
 	}
 
 	@Override
