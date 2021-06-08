@@ -15,7 +15,7 @@ public class Flock {
 
     public static final int DEFAULT_FLOCK_SIZE = 200;
     public static final int INITIAL_DELTA_TIME = 50;
-    public static final int DEFAULT_COHESION_RADIUS = 100;
+    public static final int DEFAULT_COHESION_RADIUS = 150;
     public static final int DEFAULT_SEPARATION_RADIUS = 50;
     public static final int DEFAULT_ALIGNMENT_RADIUS = 100;
     public static final int DEFAULT_OBSTACLE_RADIUS = 80;
@@ -46,6 +46,7 @@ public class Flock {
     private final drawing.Canvas canvas;
 	private final List<Boid> flock = Collections.synchronizedList(new ArrayList<Boid>());
     private boolean continueRunning;
+    private double maxforce = 0.03;
 
     public Flock() {
         canvas = new Canvas( DEFAULT_CANVAS_WIDTH,DEFAULT_CANVAS_HEIGHT);
@@ -134,7 +135,7 @@ public class Flock {
                     List<Boid> cohesionNeighbours = neighbours(boid, cohesionRadius);
                     List<Boid> alignmentNeighbours = neighbours(boid, alignmentRadius);
 
-                    List<CartesianCoordinate> obstaclesNeighbours = neighboursObstacles(boid, obstacleRadius);
+                    List<Boid> obstaclesNeighbours = neighboursObstacles(boid, obstacleRadius);
 
                     CartesianCoordinate separationForce = calculateSeparationForce(separationNeighbours, boid)
                             .multiply(separationWeight);
@@ -142,7 +143,7 @@ public class Flock {
                             .multiply(cohesionWeight);
                     CartesianCoordinate alignmentForce = calculateAlignmentForce(alignmentNeighbours, boid)
                             .multiply(alignmentWeight);
-                    CartesianCoordinate obstacleForce = calculateObstacleForce(obstaclesNeighbours, boid)
+                    CartesianCoordinate obstacleForce = calculateSeparationForce(obstaclesNeighbours, boid)
                             .multiply(obstacleWeight);
 
                     // boid.align(flock,alignmentRadius);
@@ -163,23 +164,27 @@ public class Flock {
                     newPos.set(newPos.add(newVelocity));
                     boid.setPosition(newPos);
 
+                    System.out.println(canvas.getWidth() + "," + canvas.getHeight());
                     boid.wrapPosition(canvas.getWidth(), canvas.getHeight());
                 }
             }
             synchronized (flock) {
-			   canvas.clear();
+//				for (Boid boid : flock) {
+//					boid.hide();
+//				}
+                canvas.clear();
             }
 
         }
     }
 
-    private List<CartesianCoordinate> neighboursObstacles(Boid boid, double obstacleRadius) {
-        List<CartesianCoordinate> obstaclesNeighbours = new ArrayList<>();
+    private List<Boid> neighboursObstacles(Boid boid, double obstacleRadius) {
+        List<Boid> obstaclesNeighbours = new ArrayList<>();
         List<CartesianCoordinate> obstacles = this.obstacle.obstaclePoints();
-        for (CartesianCoordinate obstaclePoint : obstacles) {
-            double distanceNeighbor = boid.getPosition().sub(obstaclePoint).norm();
+        for (CartesianCoordinate obstacle : obstacles) {
+            double distanceNeighbor = boid.getPosition().add(obstacle.multiply(-1)).norm();
             if (distanceNeighbor <= obstacleRadius && distanceNeighbor >= 0) {
-                obstaclesNeighbours.add(obstaclePoint);
+                obstaclesNeighbours.add(this.obstacle);
             }
         }
         return obstaclesNeighbours;
@@ -217,22 +222,6 @@ public class Flock {
             distance[i] = boid.distanceBetween(neighbours.get(i));
             if (distance[i] > 0) {
                 CartesianCoordinate separation = boid.getPosition().sub(neighbours.get(i).getPosition());
-                separation.set(separation.normalize());
-                separation.set(separation.multiply(1 / distance[i]));
-                force.set(force.add(separation));
-            }
-        }
-        return force;
-    }
-
-    protected CartesianCoordinate calculateObstacleForce(List<CartesianCoordinate> obstacles, Boid boid) {
-        CartesianCoordinate force = new CartesianCoordinate();
-        int n = obstacles.size();
-        double[] distance = new double[n];
-        for (int i = 0; i < n; i++) {
-            distance[i] = boid.getPosition().sub(obstacles.get(i)).norm();
-            if (distance[i] > 0) {
-                CartesianCoordinate separation = boid.getPosition().sub(obstacles.get(i));
                 separation.set(separation.normalize());
                 separation.set(separation.multiply(1 / distance[i]));
                 force.set(force.add(separation));

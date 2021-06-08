@@ -122,6 +122,4 @@ public class CartesianCoordinate {
             setY(limitVal);
         }
     }
-
-
 }
