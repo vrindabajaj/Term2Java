@@ -129,7 +129,9 @@ public class Canvas extends JPanel {
 	 */
 	public void removeMostRecentLine() {
 		synchronized (lines) {
-			lines.remove(lines.size() - 1);
+			if( !lines.isEmpty()) {
+				lines.remove(lines.size() - 1);
+			}
 		}
 	}
 
