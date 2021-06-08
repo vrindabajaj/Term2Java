@@ -20,7 +20,6 @@ public class Obstacle extends AbstractBoid {
         this.setPosition( new CartesianCoordinate(xPosition,yPosition));
         this.setVelocity( new CartesianCoordinate());
         this.setCurrentAngle(0);
-        this.display();
     }
 
     @Override
@@ -34,6 +33,7 @@ public class Obstacle extends AbstractBoid {
         turn(90);
         move(BREADTH);
         putPenUp();
+        resetAngleToZero();
     }
 
     public List<CartesianCoordinate> obstaclePoints() {
