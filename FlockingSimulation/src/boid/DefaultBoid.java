@@ -1,11 +1,8 @@
 package boid;
 
-import java.util.List;
-
 import drawing.Canvas;
-import geometry.CartesianCoordinate;
 
-public class DefaultBoid extends AbstractBoid{
+public class DefaultBoid extends AbstractBoid {
 
 	public DefaultBoid(Canvas canvas) {
 		super(canvas);
@@ -13,6 +10,9 @@ public class DefaultBoid extends AbstractBoid{
 
 	@Override
 	public void display() {
+
+		double angle = getCurrentAngle();
+
 		putPenUp();
 		move(29);
 		putPenDown();
@@ -25,7 +25,7 @@ public class DefaultBoid extends AbstractBoid{
 		move(26);
 		turn(180);
 		putPenUp();
+
+		setCurrentAngle(angle);
 	}
-
-
 }

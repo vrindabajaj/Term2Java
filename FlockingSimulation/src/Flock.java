@@ -1,4 +1,6 @@
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,22 +37,25 @@ public class Flock {
 	protected  double obstacleRadius = DEFAULT_OBSTACLE_RADIUS;
 
 
-	public static final  double DEFAULT_SEPARATION_WEIGHT = 4;
-	public static final double DEFAULT_ALIGNMENT_WEIGHT = 0.05;
-	public static final double DEFAULT_COHESION_WEIGHT = 0.2;
-	public static final double DEFAULT_OBSTACLE_WEIGHT = 3.5;
-
-	protected  double separationWeight = DEFAULT_SEPARATION_WEIGHT;
-	protected  double alignmentWeight = DEFAULT_ALIGNMENT_WEIGHT;
-	protected  double cohesionWeight = DEFAULT_COHESION_WEIGHT;
-	protected static double obstacleWeight = DEFAULT_OBSTACLE_WEIGHT;
+	public static final  double INITIAL_SEPARATION_WEIGHT = 4;
+	public static final double INITIAL_ALIGNMENT_WEIGHT = 0.05;
+	public static final double INITIAL_COHESION_WEIGHT = 0.2;
+	public static final double INITIAL_OBSTACLE_WEIGHT = 3.5;
+	
+	public static final int DEFAULT_SLIDER_LENGTH = 10;
+	public static final int DEFAULT_SLIDER_START = DEFAULT_SLIDER_LENGTH/2;
+	
+	protected  double separationWeight = INITIAL_SEPARATION_WEIGHT;
+	protected  double alignmentWeight = INITIAL_ALIGNMENT_WEIGHT;
+	protected  double cohesionWeight = INITIAL_COHESION_WEIGHT;
+	protected static double obstacleWeight = INITIAL_OBSTACLE_WEIGHT;
 
 	private JFrame frame = new JFrame();
 	private JPanel sidePanel = new JPanel();
 	private BoxLayout box = new BoxLayout(sidePanel, BoxLayout.Y_AXIS);
-	private JSlider separationWeightSlide = new JSlider(SwingConstants.HORIZONTAL, 0, 10, 4);
-	private JSlider cohesionWeightSlide = new JSlider(SwingConstants.HORIZONTAL, 0, 10, 3);
-	private JSlider alignmentWeightSlide = new JSlider(SwingConstants.HORIZONTAL, 0, 10, 5);
+	private JSlider separationWeightSlide = new JSlider(SwingConstants.HORIZONTAL, 0, DEFAULT_SLIDER_LENGTH, DEFAULT_SLIDER_START);
+	private JSlider cohesionWeightSlide = new JSlider(SwingConstants.HORIZONTAL, 0, DEFAULT_SLIDER_LENGTH, DEFAULT_SLIDER_START);
+	private JSlider alignmentWeightSlide = new JSlider(SwingConstants.HORIZONTAL, 0, DEFAULT_SLIDER_LENGTH, DEFAULT_SLIDER_START);
 	private JLabel sepLabel = new JLabel("Separation");
 	private JLabel cohLabel = new JLabel("Cohesion");
 	private JLabel aliLabel = new JLabel("Alignment");
@@ -92,8 +97,6 @@ public class Flock {
 		}
 	}
 
-
-
 	private void setUpGUI() {
 		frame.setTitle("Flocking Simulation");
 		frame.setSize(WINDOW_X_SIZE, WINDOW_Y_SIZE);
@@ -104,7 +107,6 @@ public class Flock {
 		frame.add(sidePanel, BorderLayout.EAST);
 
 		sidePanel.setLayout(box);
-//      lowerPanel.setBackground(Color.gray);
 
 		separationWeightSlide.setMajorTickSpacing(5);
 		separationWeightSlide.setMinorTickSpacing(1);
@@ -121,7 +123,6 @@ public class Flock {
 
 		sidePanel.add(cohLabel);
 		sidePanel.add(cohesionWeightSlide);
-//		cohLabel.setFont(Font.PLAIN);
 
 		alignmentWeightSlide.setMajorTickSpacing(5);
 		alignmentWeightSlide.setMinorTickSpacing(1);
@@ -134,26 +135,35 @@ public class Flock {
 		separationWeightSlide.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent ce) {
-				separationWeight = (separationWeightSlide.getValue()/5) * DEFAULT_SEPARATION_WEIGHT;
+				separationWeight = (separationWeightSlide.getValue()/5) * INITIAL_SEPARATION_WEIGHT;
 			}
 		});
 
 		cohesionWeightSlide.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent ce) {
-				cohesionWeight = (cohesionWeightSlide.getValue() / 5) * DEFAULT_COHESION_WEIGHT;
+				cohesionWeight = (cohesionWeightSlide.getValue() / 5) * INITIAL_COHESION_WEIGHT;
 			}
 		});
 
 		alignmentWeightSlide.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent ce) {
-				alignmentWeight = (alignmentWeightSlide.getValue() / 5) * DEFAULT_ALIGNMENT_WEIGHT;
+				alignmentWeight = (alignmentWeightSlide.getValue() / 5) * INITIAL_ALIGNMENT_WEIGHT;
 			}
 		});
 
 		resetSlidersButton.setText("Click to reset sliders!");
 		sidePanel.add(resetSlidersButton);
+		
+		resetSlidersButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent ae) {
+				separationWeightSlide.setValue(DEFAULT_SLIDER_START);
+				cohesionWeightSlide.setValue(DEFAULT_SLIDER_START);
+				alignmentWeightSlide.setValue(DEFAULT_SLIDER_START);
+			}
+		});
 
 		frame.setVisible(true);
 
