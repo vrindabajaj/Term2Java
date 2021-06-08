@@ -1,3 +1,4 @@
+import boid.AbstractBoid;
 import boid.Boid;
 import boid.DefaultBoid;
 import boid.Obstacle;
@@ -18,27 +19,34 @@ public class Flock {
     public static final int DEFAULT_SEPARATION_RADIUS = 50;
     public static final int DEFAULT_ALIGNMENT_RADIUS = 100;
     public static final int DEFAULT_OBSTACLE_RADIUS = 80;
+
     public static final double INITIAL_SEPARATION_WEIGHT = 4;
     public static final double INITIAL_ALIGNMENT_WEIGHT = .06;
     public static final double INITIAL_COHESION_WEIGHT = .3;
     public static final double INITIAL_OBSTACLE_WEIGHT = 4;
+
     public final static int DEFAULT_CANVAS_WIDTH = 1200;
     public final static int DEFAULT_CANVAS_HEIGHT = 900;
-    private static double obstacleWeight = INITIAL_OBSTACLE_WEIGHT;
-    protected double cohesionRadius = DEFAULT_COHESION_RADIUS;
-    protected double separationRadius = DEFAULT_SEPARATION_RADIUS;
-    protected double alignmentRadius = DEFAULT_ALIGNMENT_RADIUS;
-    protected double obstacleRadius = DEFAULT_OBSTACLE_RADIUS;
+
+
+    private double cohesionRadius = DEFAULT_COHESION_RADIUS;
+    private double separationRadius = DEFAULT_SEPARATION_RADIUS;
+    private double alignmentRadius = DEFAULT_ALIGNMENT_RADIUS;
+    private double obstacleRadius = DEFAULT_OBSTACLE_RADIUS;
     // Obstacles
     Obstacle obstacle;
+    private static double obstacleWeight = INITIAL_OBSTACLE_WEIGHT;
+
     private int flockSize = DEFAULT_FLOCK_SIZE;
     private double separationWeight = INITIAL_SEPARATION_WEIGHT;
     private double alignmentWeight = INITIAL_ALIGNMENT_WEIGHT;
     private double cohesionWeight = INITIAL_COHESION_WEIGHT;
+
     private double deltaTime = INITIAL_DELTA_TIME;
     private final drawing.Canvas canvas;
 	private final List<Boid> flock = Collections.synchronizedList(new ArrayList<Boid>());
     private boolean continueRunning;
+    private double maxforce = 0.03;
 
     public Flock() {
         canvas = new Canvas(DEFAULT_CANVAS_WIDTH, DEFAULT_CANVAS_HEIGHT);
@@ -73,16 +81,13 @@ public class Flock {
         return CartesianCoordinate.average(velocity);
     }
 
-    public static void setObstacleWeight(double obstacleWeight) {
-        Flock.obstacleWeight = obstacleWeight;
-    }
 
-    private void createObstacle() {
+    public void createObstacle() {
         obstacle = new Obstacle(canvas, 250, 150);
 
     }
 
-    protected void createBoids() {
+    public void createBoids() {
 
         flock.clear();
         for (int i = 0; i < flockSize; i++) {
@@ -201,6 +206,9 @@ public class Flock {
             CartesianCoordinate averagePos = averagePosition(neighbors);
             force.set(averagePos.sub(boid.getPosition()));
             force.set(force.normalize());
+//            force.multiply(AbstractBoid.maxVelocity);
+//            force.set(force.sub(boid.getVelocity()));
+//            force.limit(maxforce);
         }
         return force;
     }

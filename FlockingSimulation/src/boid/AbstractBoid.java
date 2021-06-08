@@ -14,7 +14,7 @@ public abstract class AbstractBoid implements Boid {
 
 	protected CartesianCoordinate velocity = new CartesianCoordinate();
 	protected static double minVelocity = 1;
-	protected static double maxVelocity = 4;
+	public static double maxVelocity = 4;
 
 	/**
 	 * Turtle constructor.
@@ -28,15 +28,11 @@ public abstract class AbstractBoid implements Boid {
 		this.setVelocity(initialVelocity());
 	}
 
-	private CartesianCoordinate initialPosition() {
+	protected CartesianCoordinate initialPosition() {
 		return new CartesianCoordinate(Math.random() * Canvas.DEFAULT_X, Math.random() * Canvas.DEFAULT_Y);
 	}
 
 	protected CartesianCoordinate initialVelocity() {
-//        double velocityX = Math.random() * (maxVelocity - minVelocity) + minVelocity;
-//        double velocityY = Math.random() * (maxVelocity - minVelocity) + minVelocity;
-//        return new CartesianCoordinate(velocityX, velocityY);
-
 		double randomAngle = Math.toRadians(Math.random() * 360);
 		return new CartesianCoordinate(Math.cos(randomAngle), Math.sin(randomAngle)).normalize();
 	}
@@ -46,17 +42,8 @@ public abstract class AbstractBoid implements Boid {
 	}
 
 	public void setVelocity(CartesianCoordinate newVelocity) {
-		if (newVelocity.getX() > maxVelocity || newVelocity.getX() < -maxVelocity) {
-			this.velocity.setX(maxVelocity);
-		} else {
-			this.velocity.setX(newVelocity.getX());
-		}
-
-		if (newVelocity.getY() > maxVelocity || newVelocity.getY() < -maxVelocity) {
-			this.velocity.setY(maxVelocity);
-		} else {
-			this.velocity.setY(newVelocity.getY());
-		}
+		this.velocity = newVelocity;
+		this.velocity.limit(maxVelocity);
 	}
 
 	/**

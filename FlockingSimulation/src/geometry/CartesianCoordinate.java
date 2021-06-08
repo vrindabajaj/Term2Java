@@ -113,4 +113,13 @@ public class CartesianCoordinate {
         this.setX(coordinate.getX());
         this.setY(coordinate.getY());
     }
+
+    public void limit( double limitVal) {
+        if(this.getX() > limitVal || this.getX() < -limitVal) {
+            setX(limitVal);
+        }
+        if(this.getY() > limitVal || this.getY() < -limitVal) {
+            setY(limitVal);
+        }
+    }
 }
