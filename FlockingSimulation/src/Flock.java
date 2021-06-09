@@ -1,4 +1,3 @@
-import boid.AbstractBoid;
 import boid.Boid;
 import boid.Bird;
 import boid.Obstacle;
@@ -60,7 +59,7 @@ public class Flock {
         createObstacle();
         createBoids();
         setUpGUI();
-        gameLoop();
+        simulate();
 
     }
 
@@ -120,7 +119,7 @@ public class Flock {
         return neighbours;
     }
 
-    private void gameLoop() {
+    private void simulate() {
 
         continueRunning = true;
 
