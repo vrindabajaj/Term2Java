@@ -21,7 +21,6 @@ public abstract class AbstractBoid implements Boid {
      */
     public AbstractBoid(Canvas myCanvas) {
         this.myCanvas = myCanvas;
-        // this.turn( Math.random()* 360);
         this.setPosition(initialPosition());
         this.setVelocity(initialVelocity());
     }
@@ -116,7 +115,7 @@ public abstract class AbstractBoid implements Boid {
         this.currentAngle = currentAngle;
     }
 
-    public void display(boolean orientation) {
+    public void display() {
         putPenUp();
         move(29);
         putPenDown();

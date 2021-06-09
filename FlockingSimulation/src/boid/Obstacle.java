@@ -23,7 +23,7 @@ public class Obstacle extends AbstractBoid {
     }
 
     @Override
-    public void display(boolean orientation) {
+    public void display() {
         putPenDown();
         move(LENGTH);
         turn(90);

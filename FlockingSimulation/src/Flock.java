@@ -24,6 +24,7 @@ public class Flock {
     public static final double INITIAL_ALIGNMENT_WEIGHT = .06;
     public static final double INITIAL_COHESION_WEIGHT = .3;
     public static final double INITIAL_OBSTACLE_WEIGHT = 10;
+    public static final double INITIAL_ORIENTATION_WEIGHT = .1;
 
     public final static int DEFAULT_CANVAS_WIDTH = 1200;
     public final static int DEFAULT_CANVAS_HEIGHT = 900;
@@ -41,6 +42,7 @@ public class Flock {
     private double separationWeight = INITIAL_SEPARATION_WEIGHT;
     private double alignmentWeight = INITIAL_ALIGNMENT_WEIGHT;
     private double cohesionWeight = INITIAL_COHESION_WEIGHT;
+    private double orientationWeight = INITIAL_ORIENTATION_WEIGHT;
 
     private double deltaTime = INITIAL_DELTA_TIME;
     private final drawing.Canvas canvas;
@@ -49,7 +51,6 @@ public class Flock {
 
 
 
-    private boolean orientation = false;
 
 
     public Flock() {
@@ -125,11 +126,11 @@ public class Flock {
 
 
         while (continueRunning) {
-            obstacle.display(false);
+            obstacle.display();
 
             synchronized (flock) {
                 for (Boid boid : flock) {
-                    boid.display(orientation);
+                    boid.display();
                 }
             }
             Utils.pause(deltaTime);
@@ -169,6 +170,11 @@ public class Flock {
                     newPos.set(newPos.add(newVelocity));
                     boid.setPosition(newPos);
 
+                    double orientation = calculateOrientation( boid) * orientationWeight;
+                    boid.turn(orientation);
+
+
+
                     boid.wrapPosition(canvas.getWidth(), canvas.getHeight());
                 }
             }
@@ -180,6 +186,11 @@ public class Flock {
             }
 
         }
+    }
+
+    private double calculateOrientation(Boid boid) {
+        double desiredAngle = Math.toDegrees(boid.getVelocity().headingY() + Math.PI) + boid.getCurrentAngle() + 90 ;
+        return desiredAngle;
     }
 
     private List<Boid> neighboursObstacles(Boid boid, double obstacleRadius) {
@@ -263,11 +274,12 @@ public class Flock {
         this.cohesionWeight = cohesionWeight;
     }
 
-    public boolean isOrientation() {
-        return orientation;
+
+    public double getOrientationWeight() {
+        return orientationWeight;
     }
 
-    public void setOrientation(boolean orientation) {
-        this.orientation = orientation;
+    public void setOrientationWeight(double orientationWeight) {
+        this.orientationWeight = orientationWeight;
     }
 }

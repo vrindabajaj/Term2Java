@@ -23,12 +23,14 @@ public interface Boid {
 
 	void setVelocity(CartesianCoordinate velocity);
 
+	void turn(double angle);
+
 	double getCurrentAngle();
 
 
 	void wrapPosition(double wINDOW_X_SIZE, double wINDOW_Y_SIZE);
 
-	void display(boolean orientation);
+	void display();
 
 
 	void setPosition(CartesianCoordinate cartesianCoordinate);
