@@ -54,13 +54,10 @@ public class Flock {
 
     public Flock() {
         canvas = new Canvas( DEFAULT_CANVAS_WIDTH,DEFAULT_CANVAS_HEIGHT);
-
-
         createObstacle();
         createBoids();
         setUpGUI();
         simulate();
-
     }
 
     public static void main(String[] args) {
@@ -68,58 +65,26 @@ public class Flock {
         new Flock();
     }
 
-    // Average position between boid
-    public static CartesianCoordinate averagePosition(List<Boid> boids) {
-        CartesianCoordinate[] pos = new CartesianCoordinate[boids.size()];
-        for (int i = 0; i < boids.size(); i++) {
-            pos[i] = boids.get(i).getPosition();
-        }
-        return CartesianCoordinate.average(pos);
-    }
-
-    // Average velocity between boid
-    public static CartesianCoordinate averageVelocity(List<Boid> boids) {
-        CartesianCoordinate[] velocity = new CartesianCoordinate[boids.size()];
-        for (int i = 0; i < boids.size(); i++) {
-            velocity[i] = boids.get(i).getVelocity();
-        }
-        return CartesianCoordinate.average(velocity);
-    }
-
 
     public void createObstacle() {
         obstacle = new Obstacle(canvas, 250, 150);
-
     }
 
     public void createBoids() {
-
         flock.clear();
         for (int i = 0; i < flockSize; i++) {
             flock.add(new Bird(canvas));
         }
     }
 
-    private void setUpGUI() {
-
+    protected void setUpGUI() {
         canvas.setBackground(Color.WHITE);
         UIFrame frame = new UIFrame(canvas, this);
     }
 
-    public List<Boid> neighbours(Boid b, double distance) {
-        List<Boid> neighbours = new ArrayList<>();
-        synchronized (flock) {
-            for (Boid boid : flock) {
-                double neighbourDistance = b.distanceBetween(boid);
-                if (boid != b && neighbourDistance <= distance && neighbourDistance >= 0) {
-                    neighbours.add(boid);
-                }
-            }
-        }
-        return neighbours;
-    }
 
-    private void simulate() {
+
+    protected void simulate() {
 
         continueRunning = true;
 
@@ -137,38 +102,44 @@ public class Flock {
             synchronized (flock) {
                 for (Boid boid : flock) {
                     List<Boid> separationNeighbours = neighbours(boid, separationRadius);
-                    List<Boid> cohesionNeighbours = neighbours(boid, cohesionRadius);
-                    List<Boid> alignmentNeighbours = neighbours(boid, alignmentRadius);
-
-                    List<Boid> obstaclesNeighbours = neighboursObstacles(boid, obstacleRadius);
-
                     CartesianCoordinate separationForce = calculateSeparationForce(separationNeighbours, boid)
                             .multiply(separationWeight);
+
+                    List<Boid> cohesionNeighbours = neighbours(boid, cohesionRadius);
                     CartesianCoordinate cohesionForce = calculateCohesionForce(cohesionNeighbours, boid)
                             .multiply(cohesionWeight);
+
+
+                    List<Boid> alignmentNeighbours = neighbours(boid, alignmentRadius);
                     CartesianCoordinate alignmentForce = calculateAlignmentForce(alignmentNeighbours, boid)
                             .multiply(alignmentWeight);
+
+                    List<Boid> obstaclesNeighbours = neighboursObstacles(boid, obstacleRadius);
                     CartesianCoordinate obstacleForce = calculateSeparationForce(obstaclesNeighbours, boid)
                             .multiply(obstacleWeight);
 
-                    // boid.align(flock,alignmentRadius);
 
-                    // New position
+
+                    //  determine acceleration
                     CartesianCoordinate acceleration = new CartesianCoordinate();
                     acceleration.set(acceleration.add(obstacleForce));
                     acceleration.set(acceleration.add(cohesionForce));
                     acceleration.set(acceleration.add(separationForce));
                     acceleration.set(acceleration.add(alignmentForce));
 
+                    //add acceleration to new velocity
                     CartesianCoordinate newVelocity = new CartesianCoordinate();
                     newVelocity.set(boid.getVelocity().add(acceleration));
+                    // set new velocity to boid
                     boid.setVelocity(newVelocity);
 
+                    // Add new velocity to current boid position to determine new position
                     CartesianCoordinate newPos = new CartesianCoordinate();
                     newPos.set(newPos.add(boid.getPosition()));
                     newPos.set(newPos.add(newVelocity));
                     boid.setPosition(newPos);
 
+                    //apply the orientation relative to velocity
                     double orientation = calculateOrientation( boid) * orientationWeight;
                     boid.turn(orientation);
 
@@ -185,23 +156,12 @@ public class Flock {
         }
     }
 
-    private double calculateOrientation(Boid boid) {
+    protected double calculateOrientation(Boid boid) {
         double desiredAngle = Math.toDegrees(boid.getVelocity().headingY() + Math.PI) + boid.getCurrentAngle() + 90 ;
         return desiredAngle;
     }
 
-    private List<Boid> neighboursObstacles(Boid boid, double obstacleRadius) {
-        List<Boid> obstaclesNeighbours = new ArrayList<>();
-        List<CartesianCoordinate> obstacles = this.obstacle.obstaclePoints();
-        for (CartesianCoordinate obstaclePoint : obstacles) {
-            double distanceNeighbor = boid.getPosition().sub(obstaclePoint).norm();
-            if (distanceNeighbor <= obstacleRadius && distanceNeighbor >= 0) {
-                //obstaclesNeighbours.add(this.obstacle);
-                obstaclesNeighbours.add( new Obstacle(canvas,obstaclePoint.getX(),obstaclePoint.getY()));
-            }
-        }
-        return obstaclesNeighbours;
-    }
+
 
     protected CartesianCoordinate calculateAlignmentForce(List<Boid> neighbours, Boid boid) {
         CartesianCoordinate force = new CartesianCoordinate();
@@ -214,6 +174,13 @@ public class Flock {
         return force;
     }
 
+    /**
+     * This method calculates the coherence force , coherence force is returned as a unit vector and is calculated by simply
+     * averaging the position of neighbours ( neighbours determined using @cohesionRadius).
+     * @param neighbors
+     * @param boid
+     * @return coshesion  force, unit vector
+     */
     protected CartesianCoordinate calculateCohesionForce(List<Boid> neighbors, Boid boid) {
         CartesianCoordinate force = new CartesianCoordinate();
         if (neighbors.size() > 0) {
@@ -224,6 +191,22 @@ public class Flock {
         return force;
     }
 
+    /**
+     * This method calculates the separation force so that Boids keep a small distance away from
+     * other objects (including other boids). Purpose of this force is for boids to make sure it doesn't collide with
+     * each other.
+     * </b>
+     * force is calculated using this rule :
+     * <ol>
+     *   <li>Determine the displacement vector away from supplied boid and its each neighbour</li>
+     *   <li>Calculate unit vector of displacement force</li>
+     *   <li>Sum all the displacement force , weight it by distance</li>
+     * </ol>
+     *
+     * @param neighbours list of boids that are within the supplied (@param boid) separation perception radius
+     * @param boid
+     * @return separation force, unit vector
+     */
     protected CartesianCoordinate calculateSeparationForce(List<Boid> neighbours, Boid boid) {
         CartesianCoordinate force = new CartesianCoordinate();
         int n = neighbours.size();
@@ -275,5 +258,49 @@ public class Flock {
 
     public void setOrientationWeight(double orientationWeight) {
         this.orientationWeight = orientationWeight;
+    }
+
+    protected List<Boid> neighbours(Boid b, double distance) {
+        List<Boid> neighbours = new ArrayList<>();
+        synchronized (flock) {
+            for (Boid boid : flock) {
+                double neighbourDistance = b.distanceBetween(boid);
+                if (boid != b && neighbourDistance <= distance && neighbourDistance >= 0) {
+                    neighbours.add(boid);
+                }
+            }
+        }
+        return neighbours;
+    }
+
+    protected List<Boid> neighboursObstacles(Boid boid, double obstacleRadius) {
+        List<Boid> obstaclesNeighbours = new ArrayList<>();
+        List<CartesianCoordinate> obstacles = this.obstacle.obstaclePoints();
+        for (CartesianCoordinate obstaclePoint : obstacles) {
+            double distanceNeighbor = boid.getPosition().sub(obstaclePoint).norm();
+            if (distanceNeighbor <= obstacleRadius && distanceNeighbor >= 0) {
+                //obstaclesNeighbours.add(this.obstacle);
+                obstaclesNeighbours.add( new Obstacle(canvas,obstaclePoint.getX(),obstaclePoint.getY()));
+            }
+        }
+        return obstaclesNeighbours;
+    }
+
+    // Average position between boid
+    public static CartesianCoordinate averagePosition(List<Boid> boids) {
+        CartesianCoordinate[] pos = new CartesianCoordinate[boids.size()];
+        for (int i = 0; i < boids.size(); i++) {
+            pos[i] = boids.get(i).getPosition();
+        }
+        return CartesianCoordinate.average(pos);
+    }
+
+    // Average velocity between boid
+    public static CartesianCoordinate averageVelocity(List<Boid> boids) {
+        CartesianCoordinate[] velocity = new CartesianCoordinate[boids.size()];
+        for (int i = 0; i < boids.size(); i++) {
+            velocity[i] = boids.get(i).getVelocity();
+        }
+        return CartesianCoordinate.average(velocity);
     }
 }
