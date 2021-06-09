@@ -27,7 +27,9 @@ public abstract class AbstractBoid implements Boid {
     }
 
     protected CartesianCoordinate initialPosition() {
-        return new CartesianCoordinate(Math.random() * Canvas.DEFAULT_X, Math.random() * Canvas.DEFAULT_Y);
+        //return new CartesianCoordinate(Math.random() * Canvas.DEFAULT_X, Math.random() * Canvas.DEFAULT_Y);
+        //return new CartesianCoordinate( Canvas.DEFAULT_X/2,  Canvas.DEFAULT_Y/2);
+        return new CartesianCoordinate( myCanvas.getWidth()/2,  myCanvas.getHeight()/2);
     }
 
     protected CartesianCoordinate initialVelocity() {
