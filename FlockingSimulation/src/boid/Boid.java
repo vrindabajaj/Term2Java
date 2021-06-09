@@ -35,14 +35,11 @@ public interface Boid {
 
 	double getCurrentAngle();
 
-
 	void wrapPosition(double width, double height);
 
 	void display();
 
-
 	void setPosition(CartesianCoordinate cartesianCoordinate);
-
 
 	void setCurrentAngle(double desiredAngle);
 

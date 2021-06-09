@@ -6,10 +6,15 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 
-
+/**
+ * This class constructs the GUI panel for the flocking simulation. It consists of the the canvas and a
+ * sidePanel.
+ *<b/>
+ * The canvas panel is used to simulate the boids whereas the sidePanel contains the controllers.
+ * @author Y3879165
+ *
+ */
 public class UIFrame extends JFrame {
     public final static int WINDOW_X_SIZE = 1500;
     public final static int WINDOW_Y_SIZE = 1000;
@@ -48,10 +53,6 @@ public class UIFrame extends JFrame {
             }
         });
 
-
-
-
-
         JSlider cohesionWeightSlide = createSlider();
         JLabel cohLabel = new JLabel("Cohesion");
         sidePanel.add(Box.createVerticalStrut(30));
@@ -79,8 +80,6 @@ public class UIFrame extends JFrame {
             }
         });
 
-
-
         sidePanel.add(Box.createVerticalStrut(30));
         JLabel speedLabel = new JLabel("Speed");
         JSlider speedSlide = createSlider();
@@ -107,7 +106,6 @@ public class UIFrame extends JFrame {
             }
         });
 
-
         JButton resetSlidersButton = new JButton();
         sidePanel.add(Box.createVerticalStrut(20));
         resetSlidersButton.setText("Click to reset sliders!");
@@ -122,7 +120,6 @@ public class UIFrame extends JFrame {
                 orientationSlide.setValue(SLIDER_STARTING_POSITION);
             }
         });
-
 
         sidePanel.add(Box.createVerticalStrut(30));
         Box hBox = Box.createHorizontalBox();
