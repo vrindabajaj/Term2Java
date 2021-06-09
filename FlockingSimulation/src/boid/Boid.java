@@ -3,9 +3,17 @@ package boid;
 import java.util.List;
 
 import geometry.CartesianCoordinate;
-
+/**
+ * The Boid interface contains methods which pertain to each individual boid's properties.
+ * @author Y3879165
+ * 
+ */
 public interface Boid {
 
+	/**
+	 * 
+	 * @return x and y coordinate of boid
+	 */
 	CartesianCoordinate getPosition();
 
 	/**
@@ -28,7 +36,7 @@ public interface Boid {
 	double getCurrentAngle();
 
 
-	void wrapPosition(double wINDOW_X_SIZE, double wINDOW_Y_SIZE);
+	void wrapPosition(double width, double height);
 
 	void display();
 
