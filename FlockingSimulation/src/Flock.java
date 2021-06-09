@@ -133,7 +133,7 @@ public class Flock {
                     boid.display();
                 }
             }
-            Utils.pause(deltaTime);
+
 
             synchronized (flock) {
                 for (Boid boid : flock) {
@@ -179,9 +179,7 @@ public class Flock {
                 }
             }
             synchronized (flock) {
-//				for (Boid boid : flock) {
-//					boid.hide();
-//				}
+                Utils.pause(deltaTime);
                 canvas.clear();
             }
 
@@ -223,9 +221,6 @@ public class Flock {
             CartesianCoordinate averagePos = averagePosition(neighbors);
             force.set(averagePos.sub(boid.getPosition()));
             force.set(force.normalize());
-//            force.multiply(AbstractBoid.maxVelocity);
-//            force.set(force.sub(boid.getVelocity()));
-//            force.limit(maxforce);
         }
         return force;
     }
