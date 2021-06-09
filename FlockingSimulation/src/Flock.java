@@ -1,6 +1,6 @@
 import boid.AbstractBoid;
 import boid.Boid;
-import boid.DefaultBoid;
+import boid.Bird;
 import boid.Obstacle;
 import drawing.Canvas;
 import geometry.CartesianCoordinate;
@@ -97,7 +97,7 @@ public class Flock {
 
         flock.clear();
         for (int i = 0; i < flockSize; i++) {
-            flock.add(new DefaultBoid(canvas));
+            flock.add(new Bird(canvas));
         }
     }
 

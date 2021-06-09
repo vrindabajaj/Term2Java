@@ -115,6 +115,9 @@ public abstract class AbstractBoid implements Boid {
         this.currentAngle = currentAngle;
     }
 
+    /**
+     * template provides a basic turtle shape
+     */
     public void display() {
         putPenUp();
         move(29);
