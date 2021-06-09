@@ -1,4 +1,3 @@
-import boid.AbstractBoid;
 import boid.Boid;
 import boid.Bird;
 import boid.Obstacle;
@@ -60,7 +59,7 @@ public class Flock {
         createObstacle();
         createBoids();
         setUpGUI();
-        gameLoop();
+        simulate();
 
     }
 
@@ -120,7 +119,7 @@ public class Flock {
         return neighbours;
     }
 
-    private void gameLoop() {
+    private void simulate() {
 
         continueRunning = true;
 
@@ -133,7 +132,7 @@ public class Flock {
                     boid.display();
                 }
             }
-            Utils.pause(deltaTime);
+
 
             synchronized (flock) {
                 for (Boid boid : flock) {
@@ -179,9 +178,7 @@ public class Flock {
                 }
             }
             synchronized (flock) {
-//				for (Boid boid : flock) {
-//					boid.hide();
-//				}
+                Utils.pause(deltaTime);
                 canvas.clear();
             }
 
@@ -223,9 +220,6 @@ public class Flock {
             CartesianCoordinate averagePos = averagePosition(neighbors);
             force.set(averagePos.sub(boid.getPosition()));
             force.set(force.normalize());
-//            force.multiply(AbstractBoid.maxVelocity);
-//            force.set(force.sub(boid.getVelocity()));
-//            force.limit(maxforce);
         }
         return force;
     }
