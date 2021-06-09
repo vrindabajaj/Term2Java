@@ -1,7 +1,5 @@
 package boid;
 
-import java.util.List;
-
 import geometry.CartesianCoordinate;
 /**
  * The Boid interface contains methods which pertain to each individual boid's properties.
@@ -25,7 +23,7 @@ public interface Boid {
 
 	/**
 	 *
-	 * @return velocity of Boid
+	 * @return velocity of boid
 	 */
 	CartesianCoordinate getVelocity();
 

@@ -6,8 +6,6 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 
 
 public class UIFrame extends JFrame {
@@ -102,7 +100,7 @@ public class UIFrame extends JFrame {
         orientationSlide.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent ce) {
-                double orientationWeight = (orientationSlide.getValue())/ SLIDER_WEIGHT * flock.INITIAL_ORIENTATION_WEIGHT;
+                double orientationWeight = (DEFAULT_SLIDER_LENGTH - orientationSlide.getValue())/ SLIDER_WEIGHT * flock.INITIAL_ORIENTATION_WEIGHT;
                 flock.setOrientationWeight(orientationWeight);
             }
         });
