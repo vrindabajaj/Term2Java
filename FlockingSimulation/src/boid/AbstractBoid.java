@@ -5,7 +5,7 @@ import geometry.CartesianCoordinate;
 import geometry.LineSegment;
 
 public abstract class AbstractBoid implements Boid {
-	public static final int INITIAL_ANGLE = 270;
+	public static final int INITIAL_ANGLE = 0;
 	public static double maxVelocity = 4;
     protected static double minVelocity = 1;
     protected Canvas myCanvas;

@@ -21,10 +21,10 @@ public class Flock {
     public static final int DEFAULT_OBSTACLE_RADIUS = 50;
 
     public static final double INITIAL_SEPARATION_WEIGHT = 4;
-    public static final double INITIAL_ALIGNMENT_WEIGHT = .06;
+    public static final double INITIAL_ALIGNMENT_WEIGHT = .1;
     public static final double INITIAL_COHESION_WEIGHT = .3;
     public static final double INITIAL_OBSTACLE_WEIGHT = 10;
-    public static final double INITIAL_ORIENTATION_WEIGHT = .1;
+    public static final double INITIAL_ORIENTATION_WEIGHT = .5;
 
     public final static int DEFAULT_CANVAS_WIDTH = 1200;
     public final static int DEFAULT_CANVAS_HEIGHT = 900;

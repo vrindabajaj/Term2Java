@@ -102,7 +102,7 @@ public class UIFrame extends JFrame {
         orientationSlide.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent ce) {
-                double orientationWeight = (DEFAULT_SLIDER_LENGTH - orientationSlide.getValue())/ SLIDER_WEIGHT * flock.INITIAL_ORIENTATION_WEIGHT;
+                double orientationWeight = (orientationSlide.getValue())/ SLIDER_WEIGHT * flock.INITIAL_ORIENTATION_WEIGHT;
                 flock.setOrientationWeight(orientationWeight);
             }
         });
