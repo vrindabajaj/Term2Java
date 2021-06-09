@@ -35,7 +35,7 @@ public class DefaultBoid extends AbstractBoid {
 	}
 
 	private void rotate() {
-		double desiredAngle = Math.toDegrees(getVelocity().headingY() + Math.PI) + 90 ;
+		double desiredAngle = Math.toDegrees(getVelocity().headingY() + Math.PI) + INITIAL_ANGLE + 90 ;
 		turn(desiredAngle);
 	}
 }
