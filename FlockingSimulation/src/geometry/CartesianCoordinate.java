@@ -10,7 +10,6 @@ public class CartesianCoordinate {
     public CartesianCoordinate(double x, double y) {
         this.x = x;
         this.y = y;
-
     }
 
     public CartesianCoordinate() {
@@ -20,8 +19,6 @@ public class CartesianCoordinate {
     public static void main(String[] args) {
         System.out.println("Heading X :" + Math.toDegrees(new CartesianCoordinate(-2, 2).headingX() + Math.PI / 2));
         System.out.println("Heading Y :" + Math.toDegrees(new CartesianCoordinate(-2, 2).headingY() + Math.PI / 2));
-
-
     }
 
     public final static CartesianCoordinate average(CartesianCoordinate[] coordinates) {
@@ -54,7 +51,6 @@ public class CartesianCoordinate {
         double lengthB = this.getY() - otherPoint.getY();
 
         return Math.sqrt(Math.pow(lengthA, 2) + Math.pow(lengthB, 2));
-
     }
 
     //Multiply by a constant
