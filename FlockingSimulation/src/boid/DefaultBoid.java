@@ -9,9 +9,11 @@ public class DefaultBoid extends AbstractBoid {
 	}
 
 	@Override
-	public void display() {
+	public void display(boolean orientation) {
 
-		rotate();
+		if(orientation) {
+			rotate();
+		}
 		putPenDown();
 		move(25);
 		putPenUp();
@@ -29,7 +31,7 @@ public class DefaultBoid extends AbstractBoid {
 //		move(26);
 //		turn(180);
 		putPenUp();
- 		resetAngleToZero();
+ 		resetAngle();
 	}
 
 	private void rotate() {

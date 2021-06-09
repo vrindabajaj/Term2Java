@@ -47,12 +47,18 @@ public class Flock {
 	private final List<Boid> flock = Collections.synchronizedList(new ArrayList<Boid>());
     private boolean continueRunning;
 
+
+
+    private boolean orientation = false;
+
+
     public Flock() {
         canvas = new Canvas( DEFAULT_CANVAS_WIDTH,DEFAULT_CANVAS_HEIGHT);
 
-        setUpGUI();
+
         createObstacle();
         createBoids();
+        setUpGUI();
         gameLoop();
 
     }
@@ -119,11 +125,11 @@ public class Flock {
 
 
         while (continueRunning) {
-            obstacle.display();
+            obstacle.display(false);
 
             synchronized (flock) {
                 for (Boid boid : flock) {
-                    boid.display();
+                    boid.display(orientation);
                 }
             }
             Utils.pause(deltaTime);
@@ -163,7 +169,6 @@ public class Flock {
                     newPos.set(newPos.add(newVelocity));
                     boid.setPosition(newPos);
 
-                    System.out.println(canvas.getWidth() + "," + canvas.getHeight());
                     boid.wrapPosition(canvas.getWidth(), canvas.getHeight());
                 }
             }
@@ -180,10 +185,11 @@ public class Flock {
     private List<Boid> neighboursObstacles(Boid boid, double obstacleRadius) {
         List<Boid> obstaclesNeighbours = new ArrayList<>();
         List<CartesianCoordinate> obstacles = this.obstacle.obstaclePoints();
-        for (CartesianCoordinate obstacle : obstacles) {
-            double distanceNeighbor = boid.getPosition().add(obstacle.multiply(-1)).norm();
+        for (CartesianCoordinate obstaclePoint : obstacles) {
+            double distanceNeighbor = boid.getPosition().sub(obstaclePoint).norm();
             if (distanceNeighbor <= obstacleRadius && distanceNeighbor >= 0) {
-                obstaclesNeighbours.add(this.obstacle);
+                //obstaclesNeighbours.add(this.obstacle);
+                obstaclesNeighbours.add( new Obstacle(canvas,obstaclePoint.getX(),obstaclePoint.getY()));
             }
         }
         return obstaclesNeighbours;
@@ -255,5 +261,13 @@ public class Flock {
 
     public void setCohesionWeight(double cohesionWeight) {
         this.cohesionWeight = cohesionWeight;
+    }
+
+    public boolean isOrientation() {
+        return orientation;
+    }
+
+    public void setOrientation(boolean orientation) {
+        this.orientation = orientation;
     }
 }

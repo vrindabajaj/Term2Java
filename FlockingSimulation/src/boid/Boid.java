@@ -8,24 +8,27 @@ public interface Boid {
 
 	CartesianCoordinate getPosition();
 
+	/**
+	 *
+	 * @param boid
+	 * @return distance between boids
+	 */
+	double distanceBetween(Boid boid);
 
-	void align(List<Boid> flock, double alignmentRadius);
-
-
-	double distanceBetween(Boid boidB);
-
+	/**
+	 *
+	 * @return velocity of Boid
+	 */
 	CartesianCoordinate getVelocity();
+
 	void setVelocity(CartesianCoordinate velocity);
 
 	double getCurrentAngle();
 
-	void turn(double d);
-
-	void hide();
 
 	void wrapPosition(double wINDOW_X_SIZE, double wINDOW_Y_SIZE);
 
-	void display();
+	void display(boolean orientation);
 
 
 	void setPosition(CartesianCoordinate cartesianCoordinate);
@@ -35,6 +38,5 @@ public interface Boid {
 
 
 
-    public boolean isInView(Boid otherBoid);
 
 }
