@@ -1,16 +1,18 @@
 package boid;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import drawing.Canvas;
 import geometry.CartesianCoordinate;
 
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Represents an obstacle, type of boid that has position & shape but no velocity.
+ */
 public class Obstacle extends AbstractBoid {
 
     public static final int LENGTH = 200;
     public static final int BREADTH = 100;
-    private CartesianCoordinate centrePoint;
 
     private List<CartesianCoordinate> obstaclePoints;
 
@@ -19,7 +21,6 @@ public class Obstacle extends AbstractBoid {
         this.setPosition(new CartesianCoordinate(xPosition, yPosition));
         this.setVelocity(new CartesianCoordinate());
         this.setCurrentAngle(0);
-        this.centrePoint = new CartesianCoordinate(xPosition+LENGTH/2, yPosition + BREADTH/2);
     }
 
     @Override
@@ -41,7 +42,10 @@ public class Obstacle extends AbstractBoid {
         setCurrentAngle(0);
     }
 
-    public List<CartesianCoordinate> obstaclePoints() {
+    /**
+     * @return list of CartesianCoordinate representing perimeter of obstacle
+     */
+    public List<CartesianCoordinate> obstaclePerimeter() {
 
         synchronized (this) {
             if (obstaclePoints == null) {
@@ -65,9 +69,4 @@ public class Obstacle extends AbstractBoid {
         return obstaclePoints;
     }
 
-    @Override
-    public CartesianCoordinate getPosition() {
-        //return centrePoint;
-        return super.getPosition();
-    }
 }
