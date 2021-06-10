@@ -26,8 +26,6 @@ public abstract class AbstractBoid implements Boid {
     }
 
     protected CartesianCoordinate initialPosition() {
-        //return new CartesianCoordinate(Math.random() * Canvas.DEFAULT_X, Math.random() * Canvas.DEFAULT_Y);
-        //return new CartesianCoordinate( Canvas.DEFAULT_X/2,  Canvas.DEFAULT_Y/2);
         return new CartesianCoordinate( myCanvas.getWidth()/2,  myCanvas.getHeight()/2);
     }
 
@@ -103,7 +101,6 @@ public abstract class AbstractBoid implements Boid {
     }
 
     public void resetAngle() {
-
 		this.currentAngle = INITIAL_ANGLE;
 	}
 
@@ -116,7 +113,7 @@ public abstract class AbstractBoid implements Boid {
     }
 
     /**
-     * template provides a basic turtle shape
+     * Template provides a basic turtle shape.
      */
     public void display() {
         putPenUp();
@@ -133,7 +130,10 @@ public abstract class AbstractBoid implements Boid {
         putPenUp();
     }
 
-
+    /**
+     * Stops individuals from moving off the screen. They will appear on 
+     * the other side.
+     */
     public void wrapPosition(double maxXPos, double maxYPos) {
         if (currentPoint.getX() > maxXPos + 50) {
             currentPoint.setX(0);
@@ -152,6 +152,4 @@ public abstract class AbstractBoid implements Boid {
     public double distanceBetween(Boid boid) {
         return this.getPosition().sub(boid.getPosition()).norm();
     }
-
-
 }
