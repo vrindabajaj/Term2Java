@@ -96,6 +96,7 @@ public class Flock {
                 }
             }
 
+            Utils.pause(deltaTime);
 
             synchronized (flock) {
                 for (Boid boid : flock) {
@@ -149,7 +150,6 @@ public class Flock {
             }
             synchronized (flock) {
             	//clears and redraws every deltaTime
-                Utils.pause(deltaTime);
                 canvas.clear();
             }
         }
