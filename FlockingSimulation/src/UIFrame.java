@@ -141,6 +141,7 @@ public class UIFrame extends JFrame {
                     int size = Integer.parseInt(sizeText);
                     flock.setFlockSize(size);
                     flock.createBoids();
+                    boidsSizeField.setForeground(Color.BLACK);
                 } catch(NumberFormatException exception) {
                     boidsSizeField.setForeground(Color.RED);
                 }

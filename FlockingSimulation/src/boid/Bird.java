@@ -12,6 +12,9 @@ public class Bird extends AbstractBoid {
 		super(canvas);
 	}
 
+	/**
+	 * draws a triangular shape with a beak representing bird
+	 */
 	@Override
 	public void display() {
 		putPenDown();

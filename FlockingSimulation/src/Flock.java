@@ -11,7 +11,7 @@ import java.util.Collections;
 import java.util.List;
 /**
  * This class simulates the behaviours of animal flocks seen in nature. 
- * At its core it is made up of three main movements – cohesion, alignment, and separation. 
+ * At its core it is made up of three main movements  cohesion, alignment, and separation.
  * The program allows users to change and control each of these variables as well as the speed and number
  * of the individuals (known as Boids, a term coined by Craig Reynolds, the creator of this algorithm).
  * 
@@ -96,6 +96,7 @@ public class Flock {
                 }
             }
 
+            Utils.pause(deltaTime);
 
             synchronized (flock) {
                 for (Boid boid : flock) {
@@ -149,7 +150,6 @@ public class Flock {
             }
             synchronized (flock) {
             	//clears and redraws every deltaTime
-                Utils.pause(deltaTime);
                 canvas.clear();
             }
         }
@@ -200,7 +200,7 @@ public class Flock {
      *   <li>Calculate the average position</li>
      *   <li>Calculate the unit vector of the cohesion force</li>
      * </ol>
-     * @param neighbours list of boids that are within the supplied (@param boid) cohesion perception radius
+     * @param neighbors list of boids that are within the supplied (@param boid) cohesion perception radius
      * @param boid
      * @return cohesion force, unit vector
      */
@@ -309,7 +309,7 @@ public class Flock {
      */
     protected List<Boid> neighboursObstacles(Boid boid, double obstacleRadius) {
         List<Boid> obstaclesNeighbours = new ArrayList<>();
-        List<CartesianCoordinate> obstacles = this.obstacle.obstaclePoints();
+        List<CartesianCoordinate> obstacles = this.obstacle.obstaclePerimeter();
         for (CartesianCoordinate obstaclePoint : obstacles) {
             double distanceNeighbor = boid.getPosition().sub(obstaclePoint).norm();
             if (distanceNeighbor <= obstacleRadius && distanceNeighbor >= 0) {
